@@ -1,0 +1,21 @@
+13:03:27 **** Build of configuration Debug for project fft_bsp_xgpio_example_1 ****
+make all 
+Building file: ../src/xgpio_example.c
+Invoking: ARM v8 gcc compiler
+aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xgpio_example.o" -I../../fft_bsp/psu_cortexa53_0/include -MMD -MP -MF"src/xgpio_example.d" -MT"src/xgpio_example.o" -o "src/xgpio_example.o" "../src/xgpio_example.c"
+Finished building: ../src/xgpio_example.c
+ 
+Building target: fft_bsp_xgpio_example_1.elf
+Invoking: ARM v8 gcc linker
+aarch64-none-elf-gcc -Wl,-T -Wl,../src/lscript.ld -L../../fft_bsp/psu_cortexa53_0/lib -o "fft_bsp_xgpio_example_1.elf"  ./src/xgpio_example.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+Finished building target: fft_bsp_xgpio_example_1.elf
+ 
+Invoking: ARM v8 Print Size
+aarch64-none-elf-size fft_bsp_xgpio_example_1.elf  |tee "fft_bsp_xgpio_example_1.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  34644	   2384	  20728	  57756	   e19c	fft_bsp_xgpio_example_1.elf
+Finished building: fft_bsp_xgpio_example_1.elf.size
+ 
+
+13:03:27 Build Finished (took 346ms)
+

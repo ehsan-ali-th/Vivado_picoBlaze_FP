@@ -1,0 +1,7 @@
+set_property SRC_FILE_INFO {cfile:D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/constrs_1/new/top.xdc rfile:../../../fft2.srcs/constrs_1/new/top.xdc id:1} [current_design]
+set_property src_info {type:XDC file:1 line:10 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS18} [get_ports pb_uart_rx]
+set_property src_info {type:XDC file:1 line:12 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict {PACKAGE_PIN C19 IOSTANDARD LVCMOS18} [get_ports pb_uart_tx]
+set_property src_info {type:XDC file:1 line:14 export:INPUT save:INPUT read:READ} [current_design]
+set_property -dict {PACKAGE_PIN A19 IOSTANDARD LVCMOS18} [get_ports {pb_uart_cts[0]}]

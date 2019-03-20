@@ -1,0 +1,334 @@
+#include <stdio.h>
+#include <xil_io.h>
+#include <xgpio.h>
+#include <xscugic.h>
+
+#define LED_CHANNEL				1
+#define DIP_SW_CHANNEL			2
+#define LED_DELAY     			30000000
+
+#define GPIO_DATA_5_OFFSET		0XFF0A0054
+
+union mydouble {
+	  double result_double;
+	  u64 result_bytes;
+	};
+
+XGpio Gpio; 						// The Instance of the GPIO Driver
+XScuGic InterruptControllerInstance; 	    // Instance of the Interrupt Controller
+static XScuGic_Config *GicConfig;   // The configuration parameters of the
+                                    //   controller
+
+int SetUpInterruptSystem(XScuGic *XScuGicInstancePtr);
+void IRQ0Handler(void *CallbackRef);
+
+// Create a shared variable to be used by the main thread of processing and
+// the interrupt processing
+ volatile static int InterruptProcessed = FALSE;
+
+ union mydouble result_from_picoBlaze;
+
+static
+void PSU_Mask_Write(unsigned long offset, unsigned long mask,
+	unsigned long val)
+{
+	unsigned long RegVal = 0x0;
+
+	RegVal = Xil_In32(offset);
+	RegVal &= ~(mask);
+	RegVal |= (val & mask);
+	Xil_Out32(offset, RegVal);
+}
+
+static void AssertPrint(const char8 *FilenamePtr, s32 LineNumber){
+	xil_printf("ASSERT: File Name: %s ", FilenamePtr);
+	xil_printf("Line Number: %d\r\n",LineNumber);
+}
+
+void enable_caches() {
+#ifdef __PPC__
+    Xil_ICacheEnableRegion(CACHEABLE_REGION_MASK);
+    Xil_DCacheEnableRegion(CACHEABLE_REGION_MASK);
+#elif __MICROBLAZE__
+#ifdef XPAR_MICROBLAZE_USE_ICACHE
+    Xil_ICacheEnable();
+#endif
+#ifdef XPAR_MICROBLAZE_USE_DCACHE
+    Xil_DCacheEnable();
+#endif
+#endif
+}
+
+void disable_caches() {
+#ifdef __MICROBLAZE__
+#ifdef XPAR_MICROBLAZE_USE_DCACHE
+    Xil_DCacheDisable();
+#endif
+#ifdef XPAR_MICROBLAZE_USE_ICACHE
+    Xil_ICacheDisable();
+#endif
+#endif
+}
+
+int main()
+{
+
+	volatile int Delay;		// Used to introduce delay
+	int GpioStatus;
+
+	enable_caches();
+
+	// Setup an assert call back to get some info if we assert.
+	Xil_AssertSetCallback(AssertPrint);
+
+
+
+	// Initialize the GPIO driver
+	GpioStatus = XGpio_Initialize(&Gpio, XPAR_GPIO_0_DEVICE_ID);
+
+	if (GpioStatus != XST_SUCCESS) {
+		printf("Gpio Initialization Failed\r\n");
+		return XST_FAILURE;
+	}
+
+	// Set the direction for all signals as output : 0x0
+	XGpio_SetDataDirection(&Gpio, LED_CHANNEL, 0x0);
+
+	// Turn all LEDs off
+	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x0);
+
+	// Initialize the interrupt controller driver so that it is ready to
+	// be used.
+	GicConfig = XScuGic_LookupConfig(XPAR_SCUGIC_0_DEVICE_ID);
+	if (NULL == GicConfig) {
+		return XST_FAILURE;
+	}
+	int Status = XScuGic_CfgInitialize(&InterruptControllerInstance, GicConfig,
+						GicConfig->CpuBaseAddress);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	// Perform a self-test to ensure that the hardware was built
+	// correctly
+	Status = XScuGic_SelfTest(&InterruptControllerInstance);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	// Setup the Interrupt System
+	Status = SetUpInterruptSystem(&InterruptControllerInstance);
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	// Connect a device driver handler that will be called when an
+	// interrupt for the device occurs, the device driver handler performs
+	// the specific interrupt processing for the device
+	Status = XScuGic_Connect(&InterruptControllerInstance,
+				XPAR_FABRIC_PBLAZE_0_IRQS_INTR,
+				(Xil_ExceptionHandler)IRQ0Handler,
+				(void *)&InterruptControllerInstance);
+
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	// Enable the interrupt for the device and then cause (simulate) an
+	// interrupt so the handlers will be called
+	XScuGic_Enable(&InterruptControllerInstance, XPAR_FABRIC_PBLAZE_0_IRQS_INTR);
+
+	//  Simulate the Interrupt
+	Status = XScuGic_SoftwareIntr(&InterruptControllerInstance,
+					0,
+					XPAR_CPU_ID);
+
+	if (Status != XST_SUCCESS) {
+		return XST_FAILURE;
+	}
+
+	printf ("\e[3J\e[H");	// clear screen buffer
+	printf ("\e[2J\e[H");	// Clear screen
+	printf ("Hello\n\r");
+
+	volatile double op1, op2;
+
+
+	while (1) {
+		getchar();
+
+		printf ("\e[3J\e[H");	// clear screen buffer
+		printf ("\e[2J\e[H");	// Clear screen
+
+		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0xC0000000U);
+		// Delay
+		for (Delay = 0; Delay < 10; Delay++) {}
+		// Set Picoblaze to run
+		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0x80000000U);
+
+		if (InterruptProcessed) {
+				printf("Got it.");
+		}
+	}
+
+	/*while (1) {
+		// Turn LED1 and LED2 on: Picoblaze reset done.
+		getchar();
+		XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x0);
+		printf ("\e[3J\e[H");	// clear screen buffer
+		printf ("\e[2J\e[H");	// Clear screen
+		printf ("Press a key to restart verification process: \n\r");
+		getchar();
+		printf ("Welcome to ARM Hardcore PS on Xilinx FPGA \n\r");
+
+		u64 pre_calculated = 0x4028b98de74d9b59;
+		op1 = 24.35;
+		op2 = 11.987589237;
+		result_from_picoBlaze.result_double = op1 - op2;
+
+		// Write two 64-bit value into shared memory
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +   0, 0x14223344);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +   4, 0x55667788);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +   8, 0x9911AABB);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +  12, 0xCCDDEEFF);
+
+		printf ("Wrote at memory %x, the value = %x \t", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 0,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 0));
+		printf ("Wrote at memory %x, the value = %x \n\r", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4));
+		printf ("Wrote at memory %x, the value = %x \t", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8));
+		printf ("Wrote at memory %x, the value = %x \n\r", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 12,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 12));
+
+		// Turn LED1 on: ARM has written two operands in memory.
+		XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x1);
+
+		// Last argument of PSU_Mask_Write:
+		//	The first two MSB bits are effective: 0x MSB1 MSB2 .....
+		//
+		// MSB1: 	PL auxiliary reset. Active Low.
+		//			Never set it to 0 for more than few cycles.
+		// MSB0: 	PicoBlaze reset: Active High
+
+		//printf ("Reset PicoBlaze.");
+		// Reset Picoblaze
+		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0xC0000000U);
+		// Delay
+		for (Delay = 0; Delay < 10; Delay++) {}
+		// Set Picoblaze to run
+		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0x80000000U);
+
+		// Turn LED1 and LED2 on: Picoblaze reset done.
+		//XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x3);
+
+		//printf ("entering while loop. \n\r");
+		while (1) {
+			if (InterruptProcessed) {
+				printf ("result_double = %lf \t result_bytes = %lf \t  pre_calculated = %lf \n\r",
+						result_from_picoBlaze.result_double,
+						result_from_picoBlaze.result_bytes,
+						pre_calculated);
+
+				if (pre_calculated == result_from_picoBlaze.result_bytes) {
+					printf("Calculation is correct. \n\r");
+				}
+				else {
+					printf("Calculation is not correct. \n\r");
+				}
+				printf ("got it. \n\r");
+				break;
+			}
+		}
+
+	}*/
+
+    /*while (1) {     	// wait forever.
+    	// Blink LED3
+    	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x7);
+
+    	// Delay
+    	for (Delay = 0; Delay < LED_DELAY; Delay++) {}
+
+    	// Blink LED3
+    	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x3);
+
+    	// Delay
+    	for (Delay = 0; Delay < LED_DELAY; Delay++) {}
+   }*/
+
+	disable_caches();
+
+    return 0;
+}
+
+/******************************************************************************/
+/**
+*
+* This function connects the interrupt handler of the interrupt controller to
+* the processor.  This function is separate to allow it to be customized for
+* each application.  Each processor or RTOS may require unique processing to
+* connect the interrupt handler.
+*
+* @param	XScuGicInstancePtr is the instance of the interrupt controller
+*		that needs to be worked on.
+*
+* @return	None.
+*
+* @note		None.
+*
+****************************************************************************/
+int SetUpInterruptSystem(XScuGic *XScuGicInstancePtr)
+{
+
+	/*
+	 * Connect the interrupt controller interrupt handler to the hardware
+	 * interrupt handling logic in the ARM processor.
+	 */
+	Xil_ExceptionRegisterHandler(XIL_EXCEPTION_ID_INT,
+			(Xil_ExceptionHandler) XScuGic_InterruptHandler,
+			XScuGicInstancePtr);
+
+	/*
+	 * Enable interrupts in the ARM
+	 */
+	Xil_ExceptionEnable();
+
+	return XST_SUCCESS;
+}
+
+/******************************************************************************/
+/**
+*
+* This function is designed to look like an interrupt handler in a device
+* driver. This is typically a 2nd level handler that is called from the
+* interrupt controller interrupt handler.  This handler would typically
+* perform device specific processing such as reading and writing the registers
+* of the device to clear the interrupt condition and pass any data to an
+* application using the device driver.  Many drivers already provide this
+* handler and the user is not required to create it.
+*
+* @param	CallbackRef is passed back to the device driver's interrupt
+*		handler by the XScuGic driver.  It was given to the XScuGic
+*		driver in the XScuGic_Connect() function call.  It is typically
+*		a pointer to the device driver instance variable.
+*		In this example, we do not care about the callback
+*		reference, so we passed it a 0 when connecting the handler to
+*		the XScuGic driver and we make no use of it here.
+*
+* @return	None.
+*
+* @note		None.
+*
+****************************************************************************/
+void IRQ0Handler(void *CallbackRef)
+{
+	InterruptProcessed = TRUE;
+	// Read the 64 bit result from shared memory
+	//u32 low  = Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 18);
+	//u32 high = Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 22);
+
+	//result_from_picoBlaze.result_bytes = high << 32 | low;
+
+
+}

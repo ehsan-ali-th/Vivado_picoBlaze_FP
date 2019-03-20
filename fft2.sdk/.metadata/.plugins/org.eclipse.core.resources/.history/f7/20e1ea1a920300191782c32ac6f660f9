@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <xil_io.h>
+#include <xgpio.h>
+
+#define LED_CHANNEL				1
+#define DIP_SW_CHANNEL			2
+#define LED_DELAY     			30000000
+
+#define GPIO_DATA_5_OFFSET		0XFF0A0054
+
+
+XGpio Gpio; // The Instance of the GPIO Driver
+
+static
+void PSU_Mask_Write(unsigned long offset, unsigned long mask,
+	unsigned long val)
+{
+	unsigned long RegVal = 0x0;
+
+	RegVal = Xil_In32(offset);
+	RegVal &= ~(mask);
+	RegVal |= (val & mask);
+	Xil_Out32(offset, RegVal);
+}
+
+int main()
+{
+	volatile int Delay;		// Used to introduce delay
+	int GpioStatus;
+
+	// Initialize the GPIO driver
+	GpioStatus = XGpio_Initialize(&Gpio, XPAR_GPIO_0_DEVICE_ID);
+
+	if (GpioStatus != XST_SUCCESS) {
+		xil_printf("Gpio Initialization Failed\r\n");
+		return XST_FAILURE;
+	}
+
+	// Set the direction for all signals as output : 0x0
+	XGpio_SetDataDirection(&Gpio, LED_CHANNEL, 0x0);
+
+    while (1) {
+    	// Set the four LEDs to High
+    	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0xF);
+
+    	printf ("PL Enable. (Yes/No)? \n\r");
+    	printf ("Press Y or N:");
+    	char ch, enter;
+    	scanf("%c %c", &enter, &ch);
+
+    	if (ch == 'Y') {
+    		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0xC0000000U);
+        	printf ("Got Y \n\r");
+    		// Delay
+        	for (Delay = 0; Delay < LED_DELAY; Delay++) {}
+
+    		// Clear the LED bit
+    		XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x0);
+
+    		// Wait a small amount of time so the LED is visible
+    		for (Delay = 0; Delay < LED_DELAY; Delay++) {}
+
+    		// Write two 32-bit value into shared memory
+    		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4, 0xAABBCCDD);
+    		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8, 0x11223344);
+
+    		// Write two 32-bit value from shared memory
+    		u32 read_memloc0 = Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4);
+    		u32 read_memloc1 = Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8);
+
+    		printf ("Location %x = %x \t", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4, read_memloc0);
+    		printf ("Location %x = %x \n\r", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8, read_memloc1);
+    	}
+    	else {
+    		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0x80000000U);
+        	printf ("Got something other than Y\n\r");
+    	}
+
+   }
+
+    return 0;
+}

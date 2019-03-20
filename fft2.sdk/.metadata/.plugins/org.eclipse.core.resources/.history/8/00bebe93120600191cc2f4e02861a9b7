@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <xil_io.h>
+#include <xgpio.h>
+
+#define LED_CHANNEL				1
+#define DIP_SW_CHANNEL			2
+#define LED_DELAY     			30000000
+
+#define GPIO_DATA_5_OFFSET		0XFF0A0054
+
+
+XGpio Gpio; // The Instance of the GPIO Driver
+
+static
+void PSU_Mask_Write(unsigned long offset, unsigned long mask,
+	unsigned long val)
+{
+	unsigned long RegVal = 0x0;
+
+	RegVal = Xil_In32(offset);
+	RegVal &= ~(mask);
+	RegVal |= (val & mask);
+	Xil_Out32(offset, RegVal);
+}
+
+int main()
+{
+	volatile int Delay;		// Used to introduce delay
+	int GpioStatus;
+
+	// Initialize the GPIO driver
+	GpioStatus = XGpio_Initialize(&Gpio, XPAR_GPIO_0_DEVICE_ID);
+
+	if (GpioStatus != XST_SUCCESS) {
+		xil_printf("Gpio Initialization Failed\r\n");
+		return XST_FAILURE;
+	}
+
+	// Set the direction for all signals as output : 0x0
+	XGpio_SetDataDirection(&Gpio, LED_CHANNEL, 0x0);
+
+	// Turn all LEDs off
+	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x0);
+
+	// Clear the terminal screen
+	printf ("\e[2J\e[H");
+	printf ("Welcome to ARM Hardcore PS on Xilinx FPGA \n\r");
+
+	u8 ch;
+
+	while (1) {
+		printf ("Press a key to restart verification process: \n\r");
+		//scanf ("%c" , &ch);
+		getchar();
+
+		// Write two 64-bit value into shared memory
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +   0, 0x0);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +   4, 0x11223344);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +   8, 0x55667788);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +  12, 0x9900AABB);
+		Xil_Out32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR +  16, 0xCCDDEEFF);
+
+		printf ("Location %x = %x \t", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 4));
+		printf ("Location %x = %x \n\r", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 8));
+		printf ("Location %x = %x \t", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 12,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 12));
+		printf ("Location %x = %x \n\r", XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 16,
+				Xil_In32 (XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR + 16));
+
+		// Turn LED1 on: ARM has written two operands in memory.
+		XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x1);
+
+		// Last argument of PSU_Mask_Write:
+		//	The first two MSB bits are effective: 0x MSB1 MSB2 .....
+		//
+		// MSB1: 	PL auxiliary reset. Active Low.
+		//			Never set it to 0 for more than few cycles.
+		// MSB0: 	PicoBlaze reset: Active High
+
+		// Reset Picoblaze
+		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0xC0000000U);
+
+		// Delay
+		for (Delay = 0; Delay < 10; Delay++) {}
+
+		// Set Picoblaze to run
+		PSU_Mask_Write(GPIO_DATA_5_OFFSET, 0xFFFFFFFFU, 0x80000000U);
+
+		// Turn LED1 and LED2 on: Picoblaze reset done.
+		XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x3);
+	}
+
+    /*while (1) {     	// wait forever.
+    	// Blink LED3
+    	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x7);
+
+    	// Delay
+    	for (Delay = 0; Delay < LED_DELAY; Delay++) {}
+
+    	// Blink LED3
+    	XGpio_DiscreteWrite(&Gpio, LED_CHANNEL, 0x3);
+
+    	// Delay
+    	for (Delay = 0; Delay < LED_DELAY; Delay++) {}
+   }*/
+
+    return 0;
+}

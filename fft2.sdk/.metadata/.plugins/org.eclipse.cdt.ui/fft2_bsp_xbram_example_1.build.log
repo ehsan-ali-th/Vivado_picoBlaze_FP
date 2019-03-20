@@ -1,0 +1,21 @@
+23:40:20 **** Build of configuration Debug for project fft2_bsp_xbram_example_1 ****
+make all 
+'Building file: ../src/xbram_example.c'
+'Invoking: ARM v8 gcc compiler'
+aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xbram_example.o" -I../../fft2_bsp/psu_cortexa53_0/include -MMD -MP -MF"src/xbram_example.d" -MT"src/xbram_example.o" -o "src/xbram_example.o" "../src/xbram_example.c"
+'Finished building: ../src/xbram_example.c'
+' '
+'Building target: fft2_bsp_xbram_example_1.elf'
+'Invoking: ARM v8 gcc linker'
+aarch64-none-elf-gcc -Wl,-T -Wl,../src/lscript.ld -L../../fft2_bsp/psu_cortexa53_0/lib -o "fft2_bsp_xbram_example_1.elf"  ./src/xbram_example.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: fft2_bsp_xbram_example_1.elf'
+' '
+'Invoking: ARM v8 Print Size'
+aarch64-none-elf-size fft2_bsp_xbram_example_1.elf  |tee "fft2_bsp_xbram_example_1.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  37764	   2520	  20800	  61084	   ee9c	fft2_bsp_xbram_example_1.elf
+'Finished building: fft2_bsp_xbram_example_1.elf.size'
+' '
+
+23:40:21 Build Finished (took 991ms)
+

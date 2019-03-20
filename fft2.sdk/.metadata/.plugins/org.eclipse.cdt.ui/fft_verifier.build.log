@@ -1,0 +1,6 @@
+17:06:55 **** Auto Build of configuration Debug for project fft_verifier ****
+make all 
+make: Nothing to be done for `all'.
+
+17:06:55 Build Finished (took 80ms)
+

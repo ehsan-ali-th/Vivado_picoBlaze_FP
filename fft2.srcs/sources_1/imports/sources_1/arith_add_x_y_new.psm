@@ -1,0 +1,683 @@
+;-----------------------------------------------------------------------------------
+; Software Implementation of Floating-Point Arithmetic, Double-Precision (64 bit).
+;
+;	beta(radix) = 2, k(width) = 64, p(precision) = 53, e_max = 1023
+;
+;------------------------------------------------------------------------------------
+; Procedure:			arith_mul_x_y()
+;
+; Registers Used:	Bank0 : All
+;					Bank1 : None		
+;		
+; Arguments:			Bank0 : 
+;					Bank1 : None
+;					SPM   : x = [x_7, x_6, ..., x_0]
+;			      			y = [y_7, y_6, ..., y_0]						
+;
+; Calls:				
+;
+; RETs:				None
+; 
+; RETURN Flags:			None
+;
+; Description:		Adds two 64-bit double-precision floating point numbers.
+;  	This procedure always add. For subtraction set the sign of second  operand 
+;	to negative due to the fact that x + (-y) = x - y.          
+;------------------------------------------------------------------------------------
+arith_mul_x_y:
+	CALL 	set_ops_status
+	CALL 	decompose_x
+	CALL 	decompose_y
+	CALL 	mul_special_cases
+	COMPARE	sF, FF
+	JUMP	Z, done_multiplying
+	; 	subnormal * subnormal = subnormal
+	;	normal	  * subnormal = convert to normal
+	;	normal	  * normal	  = normal	
+	FETCH 	s1, op1_status	; read the ops status
+	FETCH 	s2, op2_status	; read the ops status	TEST	s1, 80
+	JUMP 	NZ,	mul_op1_is_subnormal
+	; op1 is normal
+	TEST	s2, 80
+	JUMP 	NZ,	mul_op1_normal_op2_subnormal
+	; op1 and op2 both are normal	
+	CALL 	mul_mx_my		; result is in [Umr_6, Umr_0]
+	CALL	add_ex_ey		; exponent of result in [s1, s0]
+	JUMP	mul_compose_result
+mul_op1_normal_op2_subnormal:
+	; Perform cancellation on op2
+	FETCH s6, y_m6			; only right nibble of s6 contains y significand
+	FETCH s5, y_m5
+	FETCH s4, y_m4
+	FETCH s3, y_m3
+	FETCH s2, y_m2
+	FETCH s1, y_m1
+	FETCH s0, y_m0
+	CALL 	mul_cancellation		; return sA = number of bits shifted to left
+	; Subtract exponent by sA
+	FETCH	sE, y_ex6
+	FETCH	sF, y_ex7
+	SUB		sE, sA
+	SUBCY	sF, 00
+	STORE	sE, y_ex6
+	STORE	sF, y_ex7
+	CALL 	mul_mx_my		; result is in [Umr_6, Umr_0]
+	CALL	add_ex_ey		; exponent of result in [s1, s0]
+	JUMP	mul_compose_result	
+mul_op1_is_subnormal:
+	TEST	s2, 80
+	JUMP 	NZ,	mul_op1_op2_both_subnormal
+	; op1 is subnormal but op2 is normal
+	; Perform cancellation on op2
+	FETCH s6, x_m6			; only right nibble of s6 contains y significand
+	FETCH s5, x_m5
+	FETCH s4, x_m4
+	FETCH s3, x_m3
+	FETCH s2, x_m2
+	FETCH s1, x_m1
+	FETCH s0, x_m0
+	CALL 	mul_cancellation		; return sA = number of bits shifted to left
+	; Subtract exponent by sA
+	FETCH	sE, x_ex6
+	FETCH	sF, x_ex7
+	SUB		sE, sA
+	SUBCY	sF, 00
+	STORE	sE, x_ex6
+	STORE	sF, x_ex7
+	CALL 	mul_mx_my		; result is in [Umr_6, Umr_0]
+	CALL	add_ex_ey		; exponent of result in [s1, s0]
+	JUMP mul_compose_result
+mul_op1_op2_both_subnormal:
+	CALL 	mul_mx_my		; result is in [Umr_6, Umr_0]
+	LOAD	s1, 00
+	LOAD	s0, 00
+mul_compose_result:	
+	; Compose the result
+	FETCH	s8, Umr_6
+	FETCH	s7, Umr_5
+	FETCH	s6, Umr_4
+	FETCH	s5, Umr_3
+	FETCH	s4, Umr_2
+	FETCH	s3, Umr_1
+	FETCH	s2, Umr_0
+	; shif significand result to left by 2
+	SL0		s2
+	SLA	s3	
+	SLA	s4	
+	SLA	s5	
+	SLA	s6	
+	SLA	s7	
+	SLA	s8	
+	SL0		s2
+	SLA	s3	
+	SLA	s4	
+	SLA	s5	
+	SLA	s6	
+	SLA	s7	
+	SLA	s8	
+	AND		s8, 0F					; Zero the unused nibble
+	TEST	s8, 08					; if bit 106 is 1 then shiftsignificand to left by 1 
+	JUMP	Z, dont_inc_exponent		;	and increment the exponent
+	; shift significand left by 1	
+	SL0		s2
+	SLA	s3	
+	SLA	s4	
+	SLA	s5	
+	SLA	s6	
+	SLA	s7	
+	SLA	s8
+	AND		s8, 0F					; Zero the unused nibble
+	; add 1 to exponent
+	ADD		s0, 01
+	ADDCY	s1, 00
+dont_inc_exponent:	
+	; Shift the exponent result to left by 4 bit.
+	SL0		s0
+	SLA	s1
+	SLA	s0
+	SLA	s1
+	SLA	s0
+	SLA	s1
+	SLA	s0
+	SLA	s1
+	AND		s0, F0
+	; Combine exponent and significand
+	OR		s8, s0
+	; Calculate the sign
+	FETCH	sF,	x_sign
+	FETCH	sE,	y_sign
+	XOR		sF, sE			; Calculate the sign
+	AND		sF, 80	
+	OR		s1, sF			; Apply the sign
+	; Save the result in SMP
+	STORE 	s2, r_0
+	STORE 	s3, r_1
+	STORE 	s4, r_2
+	STORE 	s5, r_3
+	STORE 	s6, r_4
+	STORE 	s7, r_5
+	STORE 	s8, r_6 
+	STORE 	s1, r_7		
+done_multiplying:	
+	RETURN
+	
+;------------------------------------------------------------------------------------
+; Procedure:			mul_mx_my()
+;
+; Registers Used:	Bank0 : All
+;					Bank1 : None		
+;		
+; Arguments:			Bank0 : None
+;					Bank1 : None
+;					SPM   : x_m6, x_m5, ... x_m0 (7-bytes)
+;							y_m6, y_m5, ... y_m0	 (7-bytes)
+;			      			
+;
+; Calls:				
+;
+; RETs:				Bank1: 
+; 
+; RETURN Flags:			None
+;
+; Description:		Multiplies two 53-bit double-precision floating point numbers.
+;------------------------------------------------------------------------------------
+mul_mx_my:
+	; Setup shifted mx SPM
+	LOAD	sD, 00
+	LOAD	sC, 00
+	LOAD	sB, 00
+	LOAD	sA, 00
+	LOAD	s9, 00
+	LOAD	s8, 00
+	LOAD	s7, 00
+	FETCH 	s6, x_m6
+	FETCH	s5, x_m5
+	FETCH 	s4, x_m4
+	FETCH 	s3, x_m3
+	FETCH 	s2, x_m2
+	FETCH 	s1, x_m1
+	FETCH 	s0, x_m0
+	STORE	sD, Umx_shifted_6
+	STORE	sC, Umx_shifted_5
+	STORE	sB, Umx_shifted_4
+	STORE	sA, Umx_shifted_3
+	STORE	s9, Umx_shifted_2
+	STORE	s8, Umx_shifted_1
+	STORE	s7, Umx_shifted_0
+	STORE	s6, Lmx_shifted_6
+	STORE	s5, Lmx_shifted_5
+	STORE	s4, Lmx_shifted_4
+	STORE	s3, Lmx_shifted_3
+	STORE	s2, Lmx_shifted_2
+	STORE	s1, Lmx_shifted_1
+	STORE	s0, Lmx_shifted_0
+	LOAD	sF, 00				; Initially shift to left by 0
+	LOAD	sE, 00				; Initially shift to left by 0
+;	TEST	s0, 01				; Test if bit 0 is one
+;	JUMP 	NZ, shifting_mx_left_done
+next_shift_add:
+	; load my
+	FETCH 	s6, y_m6
+	FETCH 	s5, y_m5
+	FETCH 	s4, y_m4
+	FETCH 	s3, y_m3
+	FETCH 	s2, y_m2
+	FETCH 	s1, y_m1
+	FETCH 	s0, y_m0
+next_right_shift:
+	COMPARE	sF, 35						; Have reached 54?		
+	JUMP	Z, finish_mul				; Yes: Finish the multiplication
+	TEST	s0, 01						; Check the LSB
+	JUMP 	NZ,	shift_and_add			; if it is 1: shift and add
+	; it is 0: shift my to right by 1
+	SR0		s6
+	SRA	s5
+	SRA	s4
+	SRA	s3
+	SRA	s2
+	SRA	s1
+	SRA	s0		
+	ADD		sE, 01		
+	ADD		sF, 01		
+	JUMP	next_right_shift		
+shift_and_add:
+	; Save shifted my into SPM
+	STORE 	s6, y_m6
+	STORE 	s5, y_m5
+	STORE 	s4, y_m4
+	STORE 	s3, y_m3
+	STORE 	s2, y_m2
+	STORE 	s1, y_m1
+	STORE 	s0, y_m0
+	; load mx	
+	FETCH	sD, Umx_shifted_6
+	FETCH	sC, Umx_shifted_5
+	FETCH	sB, Umx_shifted_4
+	FETCH	sA, Umx_shifted_3
+	FETCH	s9, Umx_shifted_2
+	FETCH	s8, Umx_shifted_1
+	FETCH	s7, Umx_shifted_0
+	FETCH	s6, Lmx_shifted_6
+	FETCH	s5, Lmx_shifted_5
+	FETCH	s4, Lmx_shifted_4
+	FETCH	s3, Lmx_shifted_3
+	FETCH	s2, Lmx_shifted_2
+	FETCH	s1, Lmx_shifted_1
+	FETCH	s0, Lmx_shifted_0
+	COMPARE	sE, 00
+	JUMP	Z, shifting_mx_left_done2
+	; Shift mx left by sE
+keep_shifting_mx_left:	
+	Sl0		s0
+	SLA	s1
+	SLA	s2
+	SLA	s3
+	SLA	s4
+	SLA	s5
+	SLA	s6	
+	SLA	s7	
+	SLA	s8	
+	SLA	s9	
+	SLA	sA	
+	SLA	sB	
+	SLA	sC	
+	SLA	sD	
+	SUB		sE, 01
+	JUMP	NZ,	keep_shifting_mx_left
+shifting_mx_left_done:
+	STORE	sD, Umx_shifted_6
+	STORE	sC, Umx_shifted_5
+	STORE	sB, Umx_shifted_4
+	STORE	sA, Umx_shifted_3
+	STORE	s9, Umx_shifted_2
+	STORE	s8, Umx_shifted_1
+	STORE	s7, Umx_shifted_0
+	STORE	s6, Lmx_shifted_6
+	STORE	s5, Lmx_shifted_5
+	STORE	s4, Lmx_shifted_4
+	STORE	s3, Lmx_shifted_3
+	STORE	s2, Lmx_shifted_2
+	STORE	s1, Lmx_shifted_1
+	STORE	s0, Lmx_shifted_0
+shifting_mx_left_done2:	
+	; now add shifted mx to the previous result (mr)
+	; Load lower half of mr into registers [sD, s7]
+	FETCH	sD, Lmr_6
+	FETCH	sC, Lmr_5
+	FETCH	sB, Lmr_4
+	FETCH	sA, Lmr_3
+	FETCH	s9, Lmr_2
+	FETCH	s8, Lmr_1
+	FETCH	s7, Lmr_0
+	; Load lower half of shifted mx into registers [s6, s0] :already there
+	; Add 
+	ADD		s0, s7
+	ADDCY	s1, s8
+	ADDCY	s2, s9
+	ADDCY	s3, sA
+	ADDCY	s4, sB
+	ADDCY	s5, sC
+	ADDCY	s6, sD
+	; save result
+	STORE	s6, Lmr_6
+	STORE	s5, Lmr_5
+	STORE	s4, Lmr_4
+	STORE	s3, Lmr_3
+	STORE	s2, Lmr_2
+	STORE	s1, Lmr_1
+	STORE	s0, Lmr_0
+;	JUMP	NC, no_carry_for_lower_add
+	; save the carry
+;	LOAD 	s7, 01
+;	STORE	s7, mr_save_carry
+;no_carry_for_lower_add:	
+	; Load upper half of mr into registers [sD, s7]
+	FETCH	sD, Umr_6
+	FETCH	sC, Umr_5
+	FETCH	sB, Umr_4
+	FETCH	sA, Umr_3
+	FETCH	s9, Umr_2
+	FETCH	s8, Umr_1
+	FETCH	s7, Umr_0
+	; Load upper half of shifted mx into registers [s6, s0]
+	FETCH	s6, Umx_shifted_6
+	FETCH	s5, Umx_shifted_5
+	FETCH	s4, Umx_shifted_4
+	FETCH	s3, Umx_shifted_3
+	FETCH	s2, Umx_shifted_2
+	FETCH	s1, Umx_shifted_1
+	FETCH	s0, Umx_shifted_0
+	; Add
+	ADDCY	s0, s7
+	ADDCY	s1, s8
+	ADDCY	s2, s9
+	ADDCY	s3, sA
+	ADDCY	s4, sB
+	ADDCY	s5, sC
+	ADDCY	s6, sD
+	; save result
+	STORE	s6, Umr_6
+	STORE	s5, Umr_5
+	STORE	s4, Umr_4
+	STORE	s3, Umr_3
+	STORE	s2, Umr_2
+	STORE	s1, Umr_1
+	STORE	s0, Umr_0
+
+
+	;shift my to right by 1 so we can check its LSB in next round
+	; load my
+	FETCH 	s6, y_m6
+	FETCH 	s5, y_m5
+	FETCH 	s4, y_m4
+	FETCH 	s3, y_m3
+	FETCH 	s2, y_m2
+	FETCH 	s1, y_m1
+	FETCH 	s0, y_m0
+	SR0		s6
+	SRA	s5
+	SRA	s4
+	SRA	s3
+	SRA	s2
+	SRA	s1
+	SRA	s0
+	STORE 	s6, y_m6
+	STORE 	s5, y_m5
+	STORE 	s4, y_m4
+	STORE 	s3, y_m3
+	STORE 	s2, y_m2
+	STORE 	s1, y_m1
+	STORE 	s0, y_m0
+	
+	ADD		sF, 01
+	LOAD	sE, 01				; tracks the numebr of shifts per round, set it to zero for next round
+	JUMP 	next_shift_add
+	
+finish_mul:
+	RETURN
+	
+;------------------------------------------------------------------------------------
+; Procedure:			add_ex_ey()
+;
+; Registers Used:	Bank0 : All
+;					Bank1 : None		
+;		
+; Arguments:			Bank0 : None
+;					Bank1 : None
+;					SPM   : x_m6, x_m5, ... x_m0 (7-bytes)
+;							y_m6, y_m5, ... y_m0	 (7-bytes)
+;			      			
+;
+; Calls:				
+;
+; RETs:				Bank1: [s1. s0]
+; 
+; RETURN Flags:			None
+;
+; Description:		Calculates the ex + ey which is Ex + Ey - bias(1023) and returns
+;						the result in [s1, s0].
+;------------------------------------------------------------------------------------
+add_ex_ey:	SL0		s2
+	SLA	s3	
+	SLA	s4	
+	SLA	s5	
+	SLA	s6	
+	SLA	s7	
+	SLA	s8
+	FETCH 	s1, x_ex7
+	FETCH 	s0, x_ex6
+	FETCH 	s3, y_ex7
+	FETCH 	s2, y_ex6
+	ADD		s0, s2
+	ADDCY	s1, s3
+	SUB		s0, FF			; subtract by 1023'd =  03FF
+	SUBCY	s1, 03
+	RETURN
+	
+;------------------------------------------------------------------------------------
+; Procedure:			mul_special_cases()
+;
+; Registers Used:	Bank0 : s1, s2
+;					Bank1 : None		
+;		
+; Arguments:			Bank0 : None
+;					Bank1 : None
+;			      			
+;
+; Calls:				
+;
+; RETs:				Bank1: [s1. s0]
+; 
+; RETURN Flags:			None
+;
+; Description:		Takes care of special operands in multiplication.
+;					Return FF in sF if one of the operands is special.
+;					If sF is FF then the result is already in [r_7, r_8] in SPM.
+;------------------------------------------------------------------------------------	
+mul_special_cases:
+	FETCH 	s1, op1_status	; read the ops status
+	FETCH 	s2, op2_status	; read the ops status
+	; We check op1 for 
+	; 1) NaN
+	;		Yes:	return X_NaN	
+	;		No:		Go to step 2.
+	; 2) Infinity
+	;		Yes:	Check op2, if +0 and NaN then return_NaN_Inf
+	;		No:		return +infinity
+	; 3) Zero
+	;		Yes:	check if op2 is +inf or NaN then return_NaN_Inf
+	;				 else return 0
+	;		No:		check op2
+	;-----------------------------------------------
+	; Check if op1 is NaN
+	TEST	s1, 10
+	JUMP	Z, mul_final_op1_not_NaN		; No
+mul_final_op1_NaN:						; Yes
+	; Check if op2 is NaN
+	;TEST	s2, 10
+	;JUMP 	NZ, return_NAN			; Yes
+	JUMP	return_x_NAN
+mul_final_op1_not_NaN:
+	;	+inf + + inf = +inf
+	;	+inf + - inf = +NaN
+	;	-inf + + inf = +NaN
+	;	-inf + - inf = -inf
+	; infinity sign is the AND of both operands' sign bits.
+	; Result NaN bit is XOR of both operands' sign bits.
+	;-----------------------------------
+	; Check if op1 is Inf
+	TEST	s1, 20
+	JUMP	Z, mul_final_op1_not_Inf		; No
+mul_final_op1_Inf:					; Yes
+	; Check if op2 is Inf	
+	TEST	s2, 20
+	JUMP	NZ, return_y_NAN_Inf		; Yes
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN		; Yes
+	JUMP	return_x_NAN_Inf
+mul_final_op1_not_Inf:	
+	; Check if op1 is zero
+	TEST	s1, 40
+	JUMP	Z, mul_check_final_op2		; No
+mul_final_op1_is_zero:
+	; Check if op2 is Inifinity
+	TEST	s2, 20
+	JUMP	NZ, return_y_NAN_positive		; Yes
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN_positive		;Yes
+	JUMP	return_zero_mul
+	; Op1 is not NaN, Inf, and zero, so we conclude op1 is (sub)normal.	
+	; We check op2 for 
+	; 1) NaN
+	;		Yes:	return_NaN_Inf
+	;		No:		Go to step 2.
+		; 2) Infinity
+	;		Yes:	return_NaN_Inf
+	;		No:		return x
+	; 3) Zero
+	;		Yes:	return zero
+	;		No:		swap_step
+
+mul_check_final_op2:	
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN_positive		;Yes
+	JUMP	mul_final_op2_not_NaN	
+return_y_NAN_positive:
+	; make y positive
+	LOAD 	sE, 7F
+	FETCH	sD, y_7
+	AND		sD, sE
+	STORE	sD y_7	
+	JUMP	return_y_NAN
+		
+mul_final_op2_not_NaN:					; No
+	;	+inf + + inf = +inf
+	;	+inf + - inf = +NaN
+	;	-inf + + inf = +NaN
+	;	-inf + - inf = -inf
+	; infinity sign is the AND of both operands' sign bits.
+	; Result NaN bit is XOR of both operands' sign bits.
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN 		; Yes
+mul_final_op2_not_Inf:				; No
+	; Check if op2 is infinity
+	TEST	s2, 20
+	JUMP	NZ, return_y_NAN_Inf 	; Yes
+	; Check if op2 is zero
+	TEST	s2, 40
+	JUMP	NZ, return_zero_mul				; Yes
+	
+	; Both operators are (sub)normal. Perform the multiplication.
+	LOAD	sF, 00
+	RETURN	
+
+return_zero_mul:
+	LOAD	sF, FF
+;	+0 +0	=> +0 	
+;	-0 +0	=> -0 	
+;	+0 -0	=> -0 	
+;	-0 -0	=> +0 	
+	FETCH	s1, x_sign
+	FETCH	s2, y_sign
+	XOR		s1, s2			; Calculate the sign of zero
+	AND		s1, 80			; zero all other bits except sign
+	LOAD	s0, 00
+	STORE 	s0, r_6
+	STORE 	s0, r_5
+	STORE 	s0, r_4
+	STORE 	s0, r_3
+	STORE 	s0, r_2
+	STORE 	s0, r_1
+	STORE 	s0, r_0
+	STORE 	s1, r_7
+	RETURN	
+
+;------------------------------------------------------------------------------------
+; Procedure:			mul_cancellation()
+;
+; Registers Used:	Bank0 : [s6, s0]
+;					Bank1 : None		
+;		
+; Arguments:			Bank0 : 
+;					Bank1 : None
+;
+; Calls:				None
+;					None
+;
+; RETs:				sA : the number of bits shifted to left 
+; 
+; RETURN Flags:			None
+;
+; Description:		Receives a subnormal significand in [s6, s0] and normalizes it
+;------------------------------------------------------------------------------------	
+mul_cancellation:
+	; Count the number of leading zeros = nlz
+	; Shift left by nlz, and rturn the number of shifted bits.
+	; Check if er is zero then the result is as it is
+	LOAD	sA, 01			; nlz nounter	
+	LOAD	s8, s6			; make a copy of s6
+	SL1  	s8
+	SL1		s8
+	SL1		s8
+	SL1		s8
+	; Count nlz in s8
+	CALL 	count_nlz			; RETs number of zeros in s9
+	TEST	s9, FF				; is s9 = 0 ?	    
+	JUMP	Z, mul_nlz_counting_done
+	COMPARE 	s9, 04
+	JUMP 	Z, got_nlz_4
+	ADD		sA, s9				; Less than 4 zeros, Add the counted nlz to sA 
+		    					;  and finish the nlz counting,
+JUMP	nlz_counting_done
+mul_got_nlz_4:
+	ADD		sA, 04				; Add 4 nlz to sA
+	LOAD	s8, s5
+	CALL 	count_nlz			; RETs number of zeros in s9
+	COMPARE 	s9, 08
+	JUMP 	Z, got_nlz_8
+	ADD		sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+			    				;  and finish the nlz counting,
+	JUMP	nlz_counting_done
+mul_got_nlz_8:
+	ADD		sA, 08				; Add 8 nlz to sA
+	LOAD	s8, s4
+	CALL 	count_nlz			; RETs number of zeros in s9
+	COMPARE 	s9, 08
+	JUMP 	Z, got_nlz_8_s5
+	ADD		sA, s9				; Less than 4 zeros, Add the counted nlz to sA 
+			    				;  and finish the nlz counting,
+	JUMP	nlz_counting_done
+mul_got_nlz_8_s5:
+	ADD		sA, 08				; Add 8 nlz to sA
+	LOAD	s8, s3
+	CALL 	count_nlz			; RETs number of zeros in s9
+	COMPARE 	s9, 08
+	JUMP 	Z, got_nlz_8_s4
+	ADD		sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+			    				;  and finish the nlz counting,
+	JUMP	nlz_counting_done
+mul_got_nlz_8_s4:
+	ADD		sA, 08				; Add 8 nlz to sA
+	LOAD	s8, s2
+	CALL 	count_nlz			; RETs number of zeros in s9
+	COMPARE 	s9, 08
+	JUMP 	Z, got_nlz_8_s3
+	ADD		sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+			    				;  and finish the nlz counting,
+	JUMP	nlz_counting_done
+mul_got_nlz_8_s3:
+	ADD		sA, 08				; Add 8 nlz to sA
+	LOAD	s8, s1
+	CALL 	count_nlz			; RETs number of zeros in s9
+	COMPARE 	s9, 08
+	JUMP 	Z, got_nlz_8_s2
+	ADD		sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+			    				;  and finish the nlz counting,
+	JUMP	nlz_counting_done
+mul_got_nlz_8_s2:
+	ADD		sA, 08				; Add 8 nlz to sA
+	LOAD	s8, s0
+	CALL 	count_nlz			; RETs number of zeros in s9
+	ADD		sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+			    				;  and finish the nlz counting,
+mul_nlz_counting_done:
+	; Shift the significand to left by nlz(sA) bits.
+	LOAD s9, sA			; Copy the sA
+	; At this point result mantisa is in [s7, s6, ..., s1] 				
+mul_intermediate_shift_riht_loop:
+	SL0  s0				; 1-bit left shift		
+	SLA s1						
+	SLA s2		
+	SLA s3		
+	SLA s4		
+	SLA s5		
+	SLA s6		
+	SLA s7
+	SUB s9, 01
+	JUMP NZ, mul_intermediate_shift_riht_loop
+	RETURN
+

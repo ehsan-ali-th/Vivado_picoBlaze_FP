@@ -1,0 +1,566 @@
+
+*** Running vivado
+    with args -log system_wrapper.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_wrapper.tcl
+
+
+****** Vivado v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source system_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2018.3/data/ip'.
+add_files: Time (s): cpu = 00:00:05 ; elapsed = 00:00:11 . Memory (MB): peak = 383.875 ; gain = 65.418
+Command: synth_design -top system_wrapper -part xczu7ev-ffvc1156-2-e
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu7ev'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu7ev'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 8452 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 492.707 ; gain = 101.785
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'system_wrapper' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/hdl/system_wrapper.vhd:25]
+INFO: [Synth 8-3491] module 'system' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:2619' bound to instance 'system_i' of component 'system' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/hdl/system_wrapper.vhd:37]
+INFO: [Synth 8-638] synthesizing module 'system' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:2634]
+INFO: [Synth 8-3491] module 'system_axi_bram_ctrl_0_1' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_axi_bram_ctrl_0_1_stub.vhdl:5' bound to instance 'axi_bram_ctrl_0' of component 'system_axi_bram_ctrl_0_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3060]
+INFO: [Synth 8-638] synthesizing module 'system_axi_bram_ctrl_0_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_axi_bram_ctrl_0_1_stub.vhdl:51]
+INFO: [Synth 8-3491] module 'system_axi_bram_ctrl_1_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_axi_bram_ctrl_1_0_stub.vhdl:5' bound to instance 'axi_bram_ctrl_1' of component 'system_axi_bram_ctrl_1_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3103]
+INFO: [Synth 8-638] synthesizing module 'system_axi_bram_ctrl_1_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_axi_bram_ctrl_1_0_stub.vhdl:51]
+INFO: [Synth 8-3491] module 'system_axi_gpio_0_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_axi_gpio_0_0_stub.vhdl:5' bound to instance 'axi_gpio_0' of component 'system_axi_gpio_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3147]
+INFO: [Synth 8-638] synthesizing module 'system_axi_gpio_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_axi_gpio_0_0_stub.vhdl:32]
+INFO: [Synth 8-3491] module 'system_blk_mem_gen_0_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_blk_mem_gen_0_0_stub.vhdl:5' bound to instance 'blk_mem_gen_0' of component 'system_blk_mem_gen_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3171]
+INFO: [Synth 8-638] synthesizing module 'system_blk_mem_gen_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_blk_mem_gen_0_0_stub.vhdl:23]
+INFO: [Synth 8-3491] module 'system_pBlaze_0_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_pBlaze_0_0_stub.vhdl:5' bound to instance 'pBlaze_0' of component 'system_pBlaze_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3186]
+INFO: [Synth 8-638] synthesizing module 'system_pBlaze_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_pBlaze_0_0_stub.vhdl:24]
+INFO: [Synth 8-3491] module 'system_blk_mem_gen_2_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_blk_mem_gen_2_0_stub.vhdl:5' bound to instance 'picoBlaze_prog0' of component 'system_blk_mem_gen_2_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3202]
+INFO: [Synth 8-638] synthesizing module 'system_blk_mem_gen_2_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_blk_mem_gen_2_0_stub.vhdl:23]
+INFO: [Synth 8-3491] module 'system_proc_sys_reset_0_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_proc_sys_reset_0_0_stub.vhdl:5' bound to instance 'proc_sys_reset_0' of component 'system_proc_sys_reset_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3217]
+INFO: [Synth 8-638] synthesizing module 'system_proc_sys_reset_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_proc_sys_reset_0_0_stub.vhdl:21]
+INFO: [Synth 8-638] synthesizing module 'system_ps8_0_axi_periph_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:1647]
+INFO: [Synth 8-638] synthesizing module 'm00_couplers_imp_N6CHY9' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:79]
+INFO: [Synth 8-3491] module 'system_auto_ds_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_ds_0_stub.vhdl:5' bound to instance 'auto_ds' of component 'system_auto_ds_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:374]
+INFO: [Synth 8-638] synthesizing module 'system_auto_ds_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_ds_0_stub.vhdl:87]
+INFO: [Synth 8-3491] module 'system_auto_pc_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_pc_0_stub.vhdl:5' bound to instance 'auto_pc' of component 'system_auto_pc_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:453]
+INFO: [Synth 8-638] synthesizing module 'system_auto_pc_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_pc_0_stub.vhdl:67]
+INFO: [Synth 8-256] done synthesizing module 'm00_couplers_imp_N6CHY9' (1#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:79]
+INFO: [Synth 8-638] synthesizing module 'm01_couplers_imp_1YGIC8G' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:596]
+INFO: [Synth 8-3491] module 'system_auto_ds_1' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_ds_1_stub.vhdl:5' bound to instance 'auto_ds' of component 'system_auto_ds_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:826]
+INFO: [Synth 8-638] synthesizing module 'system_auto_ds_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_ds_1_stub.vhdl:87]
+INFO: [Synth 8-256] done synthesizing module 'm01_couplers_imp_1YGIC8G' (2#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:596]
+INFO: [Synth 8-638] synthesizing module 'm02_couplers_imp_1MV52F6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:989]
+INFO: [Synth 8-3491] module 'system_auto_ds_2' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_ds_2_stub.vhdl:5' bound to instance 'auto_ds' of component 'system_auto_ds_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:1219]
+INFO: [Synth 8-638] synthesizing module 'system_auto_ds_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_auto_ds_2_stub.vhdl:87]
+INFO: [Synth 8-256] done synthesizing module 'm02_couplers_imp_1MV52F6' (3#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:989]
+INFO: [Synth 8-638] synthesizing module 's00_couplers_imp_RR89KG' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:1390]
+INFO: [Synth 8-256] done synthesizing module 's00_couplers_imp_RR89KG' (4#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:1390]
+INFO: [Synth 8-3491] module 'system_xbar_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_xbar_0_stub.vhdl:5' bound to instance 'xbar' of component 'system_xbar_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:2451]
+INFO: [Synth 8-638] synthesizing module 'system_xbar_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_xbar_0_stub.vhdl:93]
+INFO: [Synth 8-256] done synthesizing module 'system_ps8_0_axi_periph_1' (5#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:1647]
+INFO: [Synth 8-3491] module 'system_xlconcat_0_1' declared at 'd:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconcat_0_1/synth/system_xlconcat_0_1.v:58' bound to instance 'xlconcat_0' of component 'system_xlconcat_0_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3361]
+INFO: [Synth 8-6157] synthesizing module 'system_xlconcat_0_1' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconcat_0_1/synth/system_xlconcat_0_1.v:58]
+INFO: [Synth 8-6157] synthesizing module 'xlconcat_v2_1_1_xlconcat' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/2f66/hdl/xlconcat_v2_1_vl_rfs.v:14]
+	Parameter IN0_WIDTH bound to: 2 - type: integer 
+	Parameter IN1_WIDTH bound to: 12 - type: integer 
+	Parameter IN2_WIDTH bound to: 1 - type: integer 
+	Parameter IN3_WIDTH bound to: 1 - type: integer 
+	Parameter IN4_WIDTH bound to: 1 - type: integer 
+	Parameter IN5_WIDTH bound to: 1 - type: integer 
+	Parameter IN6_WIDTH bound to: 1 - type: integer 
+	Parameter IN7_WIDTH bound to: 1 - type: integer 
+	Parameter IN8_WIDTH bound to: 1 - type: integer 
+	Parameter IN9_WIDTH bound to: 1 - type: integer 
+	Parameter IN10_WIDTH bound to: 1 - type: integer 
+	Parameter IN11_WIDTH bound to: 1 - type: integer 
+	Parameter IN12_WIDTH bound to: 1 - type: integer 
+	Parameter IN13_WIDTH bound to: 1 - type: integer 
+	Parameter IN14_WIDTH bound to: 1 - type: integer 
+	Parameter IN15_WIDTH bound to: 1 - type: integer 
+	Parameter IN16_WIDTH bound to: 1 - type: integer 
+	Parameter IN17_WIDTH bound to: 1 - type: integer 
+	Parameter IN18_WIDTH bound to: 1 - type: integer 
+	Parameter IN19_WIDTH bound to: 1 - type: integer 
+	Parameter IN20_WIDTH bound to: 1 - type: integer 
+	Parameter IN21_WIDTH bound to: 1 - type: integer 
+	Parameter IN22_WIDTH bound to: 1 - type: integer 
+	Parameter IN23_WIDTH bound to: 1 - type: integer 
+	Parameter IN24_WIDTH bound to: 1 - type: integer 
+	Parameter IN25_WIDTH bound to: 1 - type: integer 
+	Parameter IN26_WIDTH bound to: 1 - type: integer 
+	Parameter IN27_WIDTH bound to: 1 - type: integer 
+	Parameter IN28_WIDTH bound to: 1 - type: integer 
+	Parameter IN29_WIDTH bound to: 1 - type: integer 
+	Parameter IN30_WIDTH bound to: 1 - type: integer 
+	Parameter IN31_WIDTH bound to: 1 - type: integer 
+	Parameter dout_width bound to: 14 - type: integer 
+	Parameter NUM_PORTS bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xlconcat_v2_1_1_xlconcat' (6#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/2f66/hdl/xlconcat_v2_1_vl_rfs.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'system_xlconcat_0_1' (7#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconcat_0_1/synth/system_xlconcat_0_1.v:58]
+INFO: [Synth 8-3491] module 'system_xlconstant_0_1' declared at 'd:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconstant_0_1/synth/system_xlconstant_0_1.v:57' bound to instance 'xlconstant_0' of component 'system_xlconstant_0_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3367]
+INFO: [Synth 8-6157] synthesizing module 'system_xlconstant_0_1' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconstant_0_1/synth/system_xlconstant_0_1.v:57]
+INFO: [Synth 8-6157] synthesizing module 'xlconstant_v1_1_5_xlconstant' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/4649/hdl/xlconstant_v1_1_vl_rfs.v:23]
+	Parameter CONST_VAL bound to: 0 - type: integer 
+	Parameter CONST_WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xlconstant_v1_1_5_xlconstant' (8#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/4649/hdl/xlconstant_v1_1_vl_rfs.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'system_xlconstant_0_1' (9#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconstant_0_1/synth/system_xlconstant_0_1.v:57]
+INFO: [Synth 8-3491] module 'system_xlconstant_1_1' declared at 'd:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconstant_1_1/synth/system_xlconstant_1_1.v:57' bound to instance 'xlconstant_1' of component 'system_xlconstant_1_1' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3371]
+INFO: [Synth 8-6157] synthesizing module 'system_xlconstant_1_1' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconstant_1_1/synth/system_xlconstant_1_1.v:57]
+INFO: [Synth 8-6157] synthesizing module 'xlconstant_v1_1_5_xlconstant__parameterized0' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/4649/hdl/xlconstant_v1_1_vl_rfs.v:23]
+	Parameter CONST_VAL bound to: 0 - type: integer 
+	Parameter CONST_WIDTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xlconstant_v1_1_5_xlconstant__parameterized0' (9#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/4649/hdl/xlconstant_v1_1_vl_rfs.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'system_xlconstant_1_1' (10#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlconstant_1_1/synth/system_xlconstant_1_1.v:57]
+INFO: [Synth 8-3491] module 'system_xlslice_0_0' declared at 'd:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlslice_0_0/synth/system_xlslice_0_0.v:57' bound to instance 'xlslice_0' of component 'system_xlslice_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3375]
+INFO: [Synth 8-6157] synthesizing module 'system_xlslice_0_0' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlslice_0_0/synth/system_xlslice_0_0.v:57]
+INFO: [Synth 8-6157] synthesizing module 'xlslice_v1_0_1_xlslice' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/f3db/hdl/xlslice_v1_0_vl_rfs.v:13]
+	Parameter DIN_WIDTH bound to: 12 - type: integer 
+	Parameter DIN_FROM bound to: 11 - type: integer 
+	Parameter DIN_TO bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xlslice_v1_0_1_xlslice' (11#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/f3db/hdl/xlslice_v1_0_vl_rfs.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'system_xlslice_0_0' (12#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlslice_0_0/synth/system_xlslice_0_0.v:57]
+INFO: [Synth 8-3491] module 'system_xlslice_1_0' declared at 'd:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlslice_1_0/synth/system_xlslice_1_0.v:57' bound to instance 'xlslice_1' of component 'system_xlslice_1_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3380]
+INFO: [Synth 8-6157] synthesizing module 'system_xlslice_1_0' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlslice_1_0/synth/system_xlslice_1_0.v:57]
+INFO: [Synth 8-6157] synthesizing module 'xlslice_v1_0_1_xlslice__parameterized0' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/f3db/hdl/xlslice_v1_0_vl_rfs.v:13]
+	Parameter DIN_WIDTH bound to: 4 - type: integer 
+	Parameter DIN_FROM bound to: 0 - type: integer 
+	Parameter DIN_TO bound to: 0 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'xlslice_v1_0_1_xlslice__parameterized0' (12#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ipshared/f3db/hdl/xlslice_v1_0_vl_rfs.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'system_xlslice_1_0' (13#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xlslice_1_0/synth/system_xlslice_1_0.v:57]
+INFO: [Synth 8-3491] module 'system_zynq_ultra_ps_e_0_0' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_zynq_ultra_ps_e_0_0_stub.vhdl:5' bound to instance 'zynq_ultra_ps_e_0' of component 'system_zynq_ultra_ps_e_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:3385]
+INFO: [Synth 8-638] synthesizing module 'system_zynq_ultra_ps_e_0_0' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/.Xil/Vivado-9824-LAPTOP-N4P8E4G3/realtime/system_zynq_ultra_ps_e_0_0_stub.vhdl:55]
+INFO: [Synth 8-256] done synthesizing module 'system' (14#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/synth/system.vhd:2634]
+INFO: [Synth 8-256] done synthesizing module 'system_wrapper' (15#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/hdl/system_wrapper.vhd:25]
+WARNING: [Synth 8-3331] design xlslice_v1_0_1_xlslice__parameterized0 has unconnected port Din[3]
+WARNING: [Synth 8-3331] design xlslice_v1_0_1_xlslice__parameterized0 has unconnected port Din[2]
+WARNING: [Synth 8-3331] design xlslice_v1_0_1_xlslice__parameterized0 has unconnected port Din[1]
+WARNING: [Synth 8-3331] design xlslice_v1_0_1_xlslice has unconnected port Din[1]
+WARNING: [Synth 8-3331] design xlslice_v1_0_1_xlslice has unconnected port Din[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In2[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In3[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In4[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In5[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In6[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In7[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In8[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In9[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In10[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In11[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In12[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In13[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In14[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In15[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In16[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In17[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In18[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In19[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In20[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In21[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In22[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In23[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In24[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In25[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In26[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In27[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In28[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In29[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In30[0]
+WARNING: [Synth 8-3331] design xlconcat_v2_1_1_xlconcat has unconnected port In31[0]
+WARNING: [Synth 8-3331] design s00_couplers_imp_RR89KG has unconnected port M_ACLK
+WARNING: [Synth 8-3331] design s00_couplers_imp_RR89KG has unconnected port M_ARESETN
+WARNING: [Synth 8-3331] design s00_couplers_imp_RR89KG has unconnected port S_ACLK
+WARNING: [Synth 8-3331] design s00_couplers_imp_RR89KG has unconnected port S_ARESETN
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port M_ACLK
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port M_ARESETN
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[39]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[38]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[37]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[36]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[35]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[34]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[33]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[32]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[31]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[30]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[29]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[28]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[27]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[26]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[25]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[24]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[23]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[22]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[21]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[20]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[19]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[18]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[17]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[16]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[15]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_araddr[14]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[39]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[38]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[37]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[36]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[35]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[34]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[33]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[32]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[31]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[30]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[29]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[28]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[27]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[26]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[25]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[24]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[23]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[22]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[21]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[20]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[19]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[18]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[17]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[16]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[15]
+WARNING: [Synth 8-3331] design m02_couplers_imp_1MV52F6 has unconnected port S_AXI_awaddr[14]
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port M_ACLK
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port M_ARESETN
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port S_AXI_araddr[39]
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port S_AXI_araddr[38]
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port S_AXI_araddr[37]
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port S_AXI_araddr[36]
+WARNING: [Synth 8-3331] design m01_couplers_imp_1YGIC8G has unconnected port S_AXI_araddr[35]
+INFO: [Common 17-14] Message 'Synth 8-3331' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 552.945 ; gain = 162.023
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 552.945 ; gain = 162.023
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 552.945 ; gain = 162.023
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xczu7ev-ffvc1156-2-e
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0_in_context.xdc] for cell 'system_i/zynq_ultra_ps_e_0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0_in_context.xdc] for cell 'system_i/zynq_ultra_ps_e_0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_axi_gpio_0_0/system_axi_gpio_0_0/system_axi_gpio_0_0_in_context.xdc] for cell 'system_i/axi_gpio_0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_axi_gpio_0_0/system_axi_gpio_0_0/system_axi_gpio_0_0_in_context.xdc] for cell 'system_i/axi_gpio_0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_proc_sys_reset_0_0/system_proc_sys_reset_0_0/system_proc_sys_reset_0_0_in_context.xdc] for cell 'system_i/proc_sys_reset_0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_proc_sys_reset_0_0/system_proc_sys_reset_0_0/system_proc_sys_reset_0_0_in_context.xdc] for cell 'system_i/proc_sys_reset_0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_blk_mem_gen_0_0/system_blk_mem_gen_0_0/system_blk_mem_gen_0_0_in_context.xdc] for cell 'system_i/blk_mem_gen_0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_blk_mem_gen_0_0/system_blk_mem_gen_0_0/system_blk_mem_gen_0_0_in_context.xdc] for cell 'system_i/blk_mem_gen_0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_axi_bram_ctrl_0_1/system_axi_bram_ctrl_0_1/system_axi_bram_ctrl_0_1_in_context.xdc] for cell 'system_i/axi_bram_ctrl_0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_axi_bram_ctrl_0_1/system_axi_bram_ctrl_0_1/system_axi_bram_ctrl_0_1_in_context.xdc] for cell 'system_i/axi_bram_ctrl_0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_pBlaze_0_0/system_pBlaze_0_0/system_pBlaze_0_0_in_context.xdc] for cell 'system_i/pBlaze_0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_pBlaze_0_0/system_pBlaze_0_0/system_pBlaze_0_0_in_context.xdc] for cell 'system_i/pBlaze_0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_axi_bram_ctrl_1_0/system_axi_bram_ctrl_1_0/system_axi_bram_ctrl_1_0_in_context.xdc] for cell 'system_i/axi_bram_ctrl_1'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_axi_bram_ctrl_1_0/system_axi_bram_ctrl_1_0/system_axi_bram_ctrl_1_0_in_context.xdc] for cell 'system_i/axi_bram_ctrl_1'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_blk_mem_gen_2_0/system_blk_mem_gen_2_0/system_blk_mem_gen_2_0_in_context.xdc] for cell 'system_i/picoBlaze_prog0'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_blk_mem_gen_2_0/system_blk_mem_gen_2_0/system_blk_mem_gen_2_0_in_context.xdc] for cell 'system_i/picoBlaze_prog0'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xbar_0/system_xbar_0/system_xbar_0_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/xbar'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_xbar_0/system_xbar_0/system_xbar_0_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/xbar'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_ds_0/system_auto_ds_0/system_auto_ds_0_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m00_couplers/auto_ds'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_ds_0/system_auto_ds_0/system_auto_ds_0_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m00_couplers/auto_ds'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_pc_0/system_auto_pc_0/system_auto_pc_0_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m00_couplers/auto_pc'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_pc_0/system_auto_pc_0/system_auto_pc_0_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m00_couplers/auto_pc'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_ds_1/system_auto_ds_1/system_auto_ds_1_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m01_couplers/auto_ds'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_ds_1/system_auto_ds_1/system_auto_ds_1_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m01_couplers/auto_ds'
+Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_ds_2/system_auto_ds_2/system_auto_ds_2_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m02_couplers/auto_ds'
+Finished Parsing XDC File [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_auto_ds_2/system_auto_ds_2/system_auto_ds_2_in_context.xdc] for cell 'system_i/ps8_0_axi_periph/m02_couplers/auto_ds'
+Parsing XDC File [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/constrs_1/new/top.xdc]
+Finished Parsing XDC File [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/constrs_1/new/top.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/constrs_1/new/top.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/system_wrapper_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/system_wrapper_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Parsing XDC File [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/dont_touch.xdc]
+Finished Parsing XDC File [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/dont_touch.xdc]
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1644.898 ; gain = 0.000
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1644.898 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1644.898 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1644.898 ; gain = 0.000
+WARNING: [Timing 38-316] Clock period '10.000' specified during out-of-context synthesis of instance 'system_i/axi_gpio_0' at clock pin 's_axi_aclk' is different from the actual clock period '3.333', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '20.000' specified during out-of-context synthesis of instance 'system_i/blk_mem_gen_0' at clock pin 'clka' is different from the actual clock period '3.333', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '20.000' specified during out-of-context synthesis of instance 'system_i/picoBlaze_prog0' at clock pin 'clka' is different from the actual clock period '3.333', this can lead to different synthesis results.
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 1644.898 ; gain = 1253.977
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu7ev-ffvc1156-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 1644.898 ; gain = 1253.977
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property DONT_TOUCH = true for system_i. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/zynq_ultra_ps_e_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/axi_gpio_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/proc_sys_reset_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/ps8_0_axi_periph. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/blk_mem_gen_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/axi_bram_ctrl_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/pBlaze_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/xlconstant_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/xlslice_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/xlslice_1. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/axi_bram_ctrl_1. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/picoBlaze_prog0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/xlconcat_0. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/xlconstant_1. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/ps8_0_axi_periph/xbar. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/ps8_0_axi_periph/m00_couplers/auto_ds. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/ps8_0_axi_periph/m00_couplers/auto_pc. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/ps8_0_axi_periph/m01_couplers/auto_ds. (constraint file  auto generated constraint, line ).
+Applied set_property DONT_TOUCH = true for system_i/ps8_0_axi_periph/m02_couplers/auto_ds. (constraint file  auto generated constraint, line ).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:16 . Memory (MB): peak = 1644.898 ; gain = 1253.977
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:14 ; elapsed = 00:00:16 . Memory (MB): peak = 1644.898 ; gain = 1253.977
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1728 (col length:144)
+BRAMs: 624 (col length: RAMB18 144 RAMB36 72)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 1644.898 ; gain = 1253.977
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5578] Moved timing constraint from pin 'system_i/zynq_ultra_ps_e_0/pl_clk0' to pin 'system_i/zynq_ultra_ps_e_0/bbstub_pl_clk0/O'
+INFO: [Synth 8-5578] Moved timing constraint from pin 'system_i/axi_bram_ctrl_0/bram_clk_a' to pin 'system_i/axi_bram_ctrl_0/bbstub_bram_clk_a/O'
+INFO: [Synth 8-5578] Moved timing constraint from pin 'system_i/axi_bram_ctrl_1/bram_clk_a' to pin 'system_i/axi_bram_ctrl_1/bbstub_bram_clk_a/O'
+INFO: [Synth 8-5819] Moved 3 constraints on hierarchical pins to their respective driving/loading pins
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:23 ; elapsed = 00:00:26 . Memory (MB): peak = 2051.801 ; gain = 1660.879
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:23 ; elapsed = 00:00:26 . Memory (MB): peak = 2051.949 ; gain = 1661.027
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:23 ; elapsed = 00:00:27 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+---------------------------+----------+
+|      |BlackBox name              |Instances |
++------+---------------------------+----------+
+|1     |system_xbar_0              |         1|
+|2     |system_auto_ds_0           |         1|
+|3     |system_auto_pc_0           |         1|
+|4     |system_auto_ds_1           |         1|
+|5     |system_auto_ds_2           |         1|
+|6     |system_axi_bram_ctrl_0_1   |         1|
+|7     |system_axi_bram_ctrl_1_0   |         1|
+|8     |system_axi_gpio_0_0        |         1|
+|9     |system_blk_mem_gen_0_0     |         1|
+|10    |system_pBlaze_0_0          |         1|
+|11    |system_blk_mem_gen_2_0     |         1|
+|12    |system_proc_sys_reset_0_0  |         1|
+|13    |system_zynq_ultra_ps_e_0_0 |         1|
++------+---------------------------+----------+
+
+Report Cell Usage: 
++------+-----------------------------------+------+
+|      |Cell                               |Count |
++------+-----------------------------------+------+
+|1     |system_auto_ds_0_bbox_7            |     1|
+|2     |system_auto_ds_1_bbox_9            |     1|
+|3     |system_auto_ds_2_bbox_10           |     1|
+|4     |system_auto_pc_0_bbox_8            |     1|
+|5     |system_axi_bram_ctrl_0_1_bbox_0    |     1|
+|6     |system_axi_bram_ctrl_1_0_bbox_1    |     1|
+|7     |system_axi_gpio_0_0_bbox_2         |     1|
+|8     |system_blk_mem_gen_0_0_bbox_3      |     1|
+|9     |system_blk_mem_gen_2_0_bbox_5      |     1|
+|10    |system_pBlaze_0_0_bbox_4           |     1|
+|11    |system_proc_sys_reset_0_0_bbox_6   |     1|
+|12    |system_xbar_0_bbox_11              |     1|
+|13    |system_zynq_ultra_ps_e_0_0_bbox_12 |     1|
+|14    |IBUF                               |     6|
+|15    |OBUF                               |     6|
++------+-----------------------------------+------+
+
+Report Instance Areas: 
++------+---------------------+--------------------------+------+
+|      |Instance             |Module                    |Cells |
++------+---------------------+--------------------------+------+
+|1     |top                  |                          |  2503|
+|2     |  system_i           |system                    |  2491|
+|3     |    ps8_0_axi_periph |system_ps8_0_axi_periph_1 |  1865|
+|4     |      m00_couplers   |m00_couplers_imp_N6CHY9   |   455|
+|5     |      m01_couplers   |m01_couplers_imp_1YGIC8G  |   230|
+|6     |      m02_couplers   |m02_couplers_imp_1MV52F6  |   234|
+|7     |    xlconcat_0       |system_xlconcat_0_1       |     0|
+|8     |    xlconstant_0     |system_xlconstant_0_1     |     0|
+|9     |    xlconstant_1     |system_xlconstant_1_1     |     0|
+|10    |    xlslice_0        |system_xlslice_0_0        |     0|
+|11    |    xlslice_1        |system_xlslice_1_0        |     0|
++------+---------------------+--------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:25 ; elapsed = 00:00:28 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 13 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:13 ; elapsed = 00:00:18 . Memory (MB): peak = 2062.902 ; gain = 580.027
+Synthesis Optimization Complete : Time (s): cpu = 00:00:25 ; elapsed = 00:00:29 . Memory (MB): peak = 2062.902 ; gain = 1671.980
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 6 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2102.504 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 6 instances were transformed.
+  IBUF => IBUF (IBUFCTRL, INBUF): 6 instances
+
+INFO: [Common 17-83] Releasing license: Synthesis
+87 Infos, 103 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:27 ; elapsed = 00:00:31 . Memory (MB): peak = 2102.504 ; gain = 1718.629
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2102.504 ; gain = 0.000
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/synth_1/system_wrapper.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file system_wrapper_utilization_synth.rpt -pb system_wrapper_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Mar  6 16:20:10 2019...

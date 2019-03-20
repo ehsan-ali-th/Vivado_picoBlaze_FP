@@ -1,0 +1,803 @@
+
+*** Running vivado
+    with args -log system_pBlaze_0_0.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_pBlaze_0_0.tcl
+
+
+****** Vivado v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source system_pBlaze_0_0.tcl -notrace
+Command: synth_design -top system_pBlaze_0_0 -part xczu7ev-ffvc1156-2-e -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu7ev'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu7ev'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 15504 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 469.078 ; gain = 104.480
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'system_pBlaze_0_0' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_pBlaze_0_0/synth/system_pBlaze_0_0.vhd:74]
+INFO: [Synth 8-3491] module 'pBlaze' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:35' bound to instance 'U0' of component 'pBlaze' [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_pBlaze_0_0/synth/system_pBlaze_0_0.vhd:111]
+INFO: [Synth 8-638] synthesizing module 'pBlaze' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:62]
+	Parameter hwbuild bound to: 8'b01000001 
+	Parameter interrupt_vector bound to: 12'b001111111111 
+	Parameter scratch_pad_memory_size bound to: 256 - type: integer 
+INFO: [Synth 8-3491] module 'kcpsm6' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:87' bound to instance 'processor' of component 'kcpsm6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:303]
+INFO: [Synth 8-638] synthesizing module 'kcpsm6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:111]
+	Parameter hwbuild bound to: 8'b01000001 
+	Parameter interrupt_vector bound to: 12'b001111111111 
+	Parameter scratch_pad_memory_size bound to: 256 - type: integer 
+	Parameter INIT bound to: 64'b1111111111111111111101010101010100000000000000000000111011101110 
+INFO: [Synth 8-113] binding component instance 'reset_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:685]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'run_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:696]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'internal_reset_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:701]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'sync_sleep_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:706]
+	Parameter INIT bound to: 64'b0000000010000011000000000000101100000000110001000000000001001100 
+INFO: [Synth 8-113] binding component instance 't_state_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:711]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 't_state1_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:722]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 't_state2_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:727]
+	Parameter INIT bound to: 64'b0000000000010000000000000000000000000000000000000000100000000000 
+INFO: [Synth 8-113] binding component instance 'int_enable_type_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:733]
+	Parameter INIT bound to: 64'b0000000000000000000000000000000000000000000000001100101010101010 
+INFO: [Synth 8-113] binding component instance 'interrupt_enable_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:744]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'interrupt_enable_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:754]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'sync_interrupt_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:759]
+	Parameter INIT bound to: 64'b1100110000110011111111110000000010000000100000001000000010000000 
+INFO: [Synth 8-113] binding component instance 'active_interrupt_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:764]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'active_interrupt_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:775]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'interrupt_ack_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:780]
+	Parameter INIT bound to: 64'b0101101000111100111111111111111100000000000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_move_is_valid_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:804]
+	Parameter INIT bound to: 64'b0111011101110111000000100111011100000000000000000000001000000000 
+INFO: [Synth 8-113] binding component instance 'move_type_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:814]
+	Parameter INIT bound to: 64'b0000000000000000111100000000000000000000000000000010001111111111 
+INFO: [Synth 8-113] binding component instance 'pc_mode1_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:825]
+	Parameter INIT bound to: 64'b1111111111111111111111111111111100000000000001000000000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_mode2_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:836]
+	Parameter INIT bound to: 64'b1111111111111111000100000000000000000000000000000010000000000000 
+INFO: [Synth 8-113] binding component instance 'push_pop_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:846]
+	Parameter INIT bound to: 64'b0000001111001010000000000000000000000100001000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'alu_decode0_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:861]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'alu_mux_sel0_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:872]
+	Parameter INIT bound to: 64'b0111011100001000000000000000000000000000000000000000111100000000 
+INFO: [Synth 8-113] binding component instance 'alu_decode1_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:877]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'alu_mux_sel1_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:888]
+	Parameter INIT bound to: 64'b1101000000000000000000000000000000000010000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'alu_decode2_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:894]
+	Parameter INIT bound to: 64'b0000000000000001001111110011111100000000000100001111011111001110 
+INFO: [Synth 8-113] binding component instance 'register_enable_type_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:909]
+	Parameter INIT bound to: 64'b1100000011001100000000000000000010100000101010100000000000000000 
+INFO: [Synth 8-113] binding component instance 'register_enable_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:920]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'flag_enable_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:931]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'register_enable_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:937]
+	Parameter INIT bound to: 64'b1000000000000000000000000000000000100000000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'spm_enable_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:943]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'k_write_strobe_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:954]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'spm_enable_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:960]
+	Parameter INIT bound to: 64'b0100000000000000000000000000000000000001000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'read_strobe_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:966]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'write_strobe_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:977]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'read_strobe_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:983]
+	Parameter INIT bound to: 64'b0000000010000000000000100000000000000000000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'regbank_type_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1001]
+	Parameter INIT bound to: 64'b1010110010101100111111110000000011111111000000001111111100000000 
+INFO: [Synth 8-113] binding component instance 'bank_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1011]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'bank_flop' to cell 'FDR' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1021]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'sx_addr4_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1027]
+INFO: [Synth 8-113] binding component instance 'arith_carry_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1051]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'arith_carry_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1056]
+	Parameter INIT bound to: 64'b0000000000000000000000000000000010000111011110000000000000000000 
+INFO: [Synth 8-113] binding component instance 'lower_parity_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1061]
+INFO: [Synth 8-113] binding component instance 'parity_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1072]
+	Parameter INIT bound to: 64'b0110100110010110100101100110100110010110011010010110100110010110 
+INFO: [Synth 8-113] binding component instance 'upper_parity_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1078]
+INFO: [Synth 8-113] binding component instance 'parity_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1088]
+	Parameter INIT bound to: 64'b1111111111111111101010101100110011110000111100001111000011110000 
+INFO: [Synth 8-113] binding component instance 'shift_carry_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1093]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'shift_carry_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1103]
+	Parameter INIT bound to: 64'b0011001100110011101010101100110011110000101010100000000000000000 
+INFO: [Synth 8-113] binding component instance 'carry_flag_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1108]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'carry_flag_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1119]
+INFO: [Synth 8-113] binding component instance 'init_zero_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1126]
+	Parameter INIT bound to: 64'b1010001010000000000000000000000000000000111100000000000011110000 
+INFO: [Synth 8-113] binding component instance 'use_zero_flag_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1132]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'use_zero_flag_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1143]
+	Parameter INIT bound to: 64'b0000000000000000000000000000000000000000000000000000000000000001 
+INFO: [Synth 8-113] binding component instance 'lower_zero_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1148]
+INFO: [Synth 8-113] binding component instance 'lower_zero_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1159]
+	Parameter INIT bound to: 64'b0000000000000000000000000000110100000000000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'middle_zero_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1165]
+INFO: [Synth 8-113] binding component instance 'middle_zero_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1176]
+	Parameter INIT bound to: 64'b1111101111111111000000000000000000000000000000000000000000000000 
+INFO: [Synth 8-113] binding component instance 'upper_zero_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1182]
+INFO: [Synth 8-113] binding component instance 'upper_zero_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1192]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'zero_flag_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1198]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+INFO: [Synth 8-113] binding component instance 'pc_vector_mux_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1264]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111100110011110011000000111100000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1350]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1366]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1371]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1426]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1440]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+INFO: [Synth 8-113] binding component instance 'pc_vector_mux_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1264]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1426]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1440]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1426]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1440]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+INFO: [Synth 8-113] binding component instance 'pc_vector_mux_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1264]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1426]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1440]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1426]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1440]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+INFO: [Synth 8-113] binding component instance 'pc_vector_mux_lut' to cell 'LUT6_2' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1264]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Synth 8-113] binding component instance 'pc_xorcy' to cell 'XORCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1426]
+INFO: [Synth 8-113] binding component instance 'pc_muxcy' to cell 'MUXCY' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1440]
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'return_vector_flop' to cell 'FD' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1249]
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+INFO: [Synth 8-113] binding component instance 'pc_flop' to cell 'FDRE' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1309]
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+INFO: [Synth 8-113] binding component instance 'pc_lut' to cell 'LUT6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:1411]
+INFO: [Common 17-14] Message 'Synth 8-113' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000010101010000000001111111111001100110011001111000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000010101010000000000000000011001100110011001111000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter IS_C_INVERTED bound to: 1'b0 
+	Parameter IS_D_INVERTED bound to: 1'b0 
+	Parameter IS_R_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000010101010000000000000000011001100110011001111000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT_A bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_B bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_C bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_D bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT_A bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_B bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_C bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_D bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000010101001010011010101010101010101010101010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000101010001001010010101010101010101010101010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000101010001001010010101010101010101010101010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000101010001001010010101010101010101010101010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000101010001001010010101010101010101010101010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b1 
+	Parameter INIT bound to: 64'b1011111110111100100011111000110010110011101100001000001110000000 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b1 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110100101101001011011101000101011001100110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 256'b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT_A bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_B bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_C bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_D bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+	Parameter INIT_A bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_B bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_C bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter INIT_D bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000 
+	Parameter IS_WCLK_INVERTED bound to: 1'b0 
+INFO: [Synth 8-256] done synthesizing module 'kcpsm6' (1#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/kcpsm6.vhd:111]
+INFO: [Synth 8-3491] module 'uart_tx6' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/uart_tx6.vhd:84' bound to instance 'tx' of component 'uart_tx6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:348]
+INFO: [Synth 8-638] synthesizing module 'uart_tx6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/uart_tx6.vhd:100]
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111111100000000011111111100000001111111100000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111000011110000111000011110000011111000011110001111000011110000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1100110010010000011000001100110010101010010100000101000010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111010011111100111101001111110000000100000000000000010011000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000000001000000000000000010000000000000000000000000000000 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1111111100000000111100001111000011001100110011001010101010101010 
+	Parameter INIT bound to: 64'b1100111110101010110011000000111100001111111111111111111111111111 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1000010101010000000000000000000010101010101010101010101010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0010011001100001000000000000000011001100110011001100110011001100 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1000100001110000000000000000000011110000111100001111000011110000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1000011101000100000000000000000011111111000000001111111100000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110110000000000000000000000000001011010000000000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0111111110000000111111110000000001111000011110001111000011110000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000000000000000000000000010000000000000000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-256] done synthesizing module 'uart_tx6' (2#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/uart_tx6.vhd:100]
+INFO: [Synth 8-3491] module 'uart_rx6' declared at 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/uart_rx6.vhd:84' bound to instance 'rx' of component 'uart_rx6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:360]
+INFO: [Synth 8-638] synthesizing module 'uart_rx6' [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/uart_rx6.vhd:100]
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 16'b0000000000000000 
+	Parameter IS_CLK_INVERTED bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111111100000000111111100000000011111111100000001111111100000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111000011110000111000011110000011111000011110001111000011110000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1100110010010000011000001100110010101010010100000101000010101010 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111010011111100111101001111110000000100000000000000010011000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000000000001000000000000000010000000000000000000000000000000 
+	Parameter INIT bound to: 64'b1100110011110000000000000000000010101010110011000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1100101011111111110010101111111100000000000000001100000011000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111000011001100111111111111111111001100101010101111111111111111 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111000011001100111111111111111111001100101010101111111111111111 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111000011001100111111111111111111001100101010101111111111111111 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b1111000011001100111111111111111111001100101010101111111111111111 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0010111100101111101011111010111100000000000000001111111100000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0010001000100010000000001111000000000000000000000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110110000000000000000000000000001011010000000000000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0110110011001100000000000000000001011010101010100000000000000000 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 1'b0 
+	Parameter INIT bound to: 64'b0000000010000000000000000000000010001000100010001000100010001000 
+	Parameter INIT bound to: 1'b0 
+INFO: [Synth 8-256] done synthesizing module 'uart_rx6' (3#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/uart_rx6.vhd:100]
+WARNING: [Synth 8-6014] Unused sequential element out_port_ideal_reg was removed.  [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:455]
+INFO: [Synth 8-256] done synthesizing module 'pBlaze' (4#1) [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:62]
+INFO: [Synth 8-256] done synthesizing module 'system_pBlaze_0_0' (5#1) [d:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/bd/system/ip/system_pBlaze_0_0/synth/system_pBlaze_0_0.vhd:74]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 526.785 ; gain = 162.188
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 526.785 ; gain = 162.188
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 526.785 ; gain = 162.188
+---------------------------------------------------------------------------------
+INFO: [Netlist 29-17] Analyzing 253 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Device 21-403] Loading part xczu7ev-ffvc1156-2-e
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1616.625 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 197 instances were transformed.
+  FD => FDRE: 86 instances
+  FDR => FDRE: 28 instances
+  FDS => FDSE: 2 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 69 instances
+  RAM256X1S => RAM256X1S (MUXF7, MUXF7, MUXF8, RAMS64E, RAMS64E, RAMS64E, RAMS64E): 8 instances
+  RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 4 instances
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1616.625 ; gain = 0.000
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+Constraint Validation Runtime : Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.116 . Memory (MB): peak = 1616.625 ; gain = 0.000
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 1616.625 ; gain = 1252.027
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu7ev-ffvc1156-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 1616.625 ; gain = 1252.027
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:28 ; elapsed = 00:00:39 . Memory (MB): peak = 1616.625 ; gain = 1252.027
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-3936] Found unconnected internal register 'irqs_reg_reg' and it is trimmed from '8' to '1' bits. [D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.srcs/sources_1/imports/sources_1/pBlaze.vhd:454]
+INFO: [Synth 8-5546] ROM "en_16_x_baud" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "tx_data_in" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "extra_mem_lo" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "extra_mem_hi" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "external_mem_dina" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "irqs_reg" won't be mapped to RAM because it is too sparse
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:29 ; elapsed = 00:00:41 . Memory (MB): peak = 1616.625 ; gain = 1252.027
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      6 Bit       Adders := 1     
++---Registers : 
+	                8 Bit    Registers := 5     
+	                6 Bit    Registers := 1     
+	                1 Bit    Registers := 5     
++---Muxes : 
+	   4 Input      8 Bit        Muxes := 1     
+	   2 Input      6 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 6     
+	   6 Input      1 Bit        Muxes := 5     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module pBlaze 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      6 Bit       Adders := 1     
++---Registers : 
+	                8 Bit    Registers := 5     
+	                6 Bit    Registers := 1     
+	                1 Bit    Registers := 5     
++---Muxes : 
+	   4 Input      8 Bit        Muxes := 1     
+	   2 Input      6 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 6     
+	   6 Input      1 Bit        Muxes := 5     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1728 (col length:144)
+BRAMs: 624 (col length: RAMB18 144 RAMB36 72)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+INFO: [Synth 8-5546] ROM "U0/en_16_x_baud" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\U0/processor/sync_interrupt_flop )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\U0/processor/sync_sleep_flop )
+INFO: [Synth 8-3332] Sequential element (U0/processor/sync_sleep_flop) is unused and will be removed from module system_pBlaze_0_0.
+INFO: [Synth 8-3332] Sequential element (U0/processor/sync_interrupt_flop) is unused and will be removed from module system_pBlaze_0_0.
+INFO: [Synth 8-3332] Sequential element (U0/processor/interrupt_ack_flop) is unused and will be removed from module system_pBlaze_0_0.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:30 ; elapsed = 00:00:42 . Memory (MB): peak = 1616.625 ; gain = 1252.027
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:48 ; elapsed = 00:01:07 . Memory (MB): peak = 2042.977 ; gain = 1678.379
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:48 ; elapsed = 00:01:07 . Memory (MB): peak = 2043.051 ; gain = 1678.453
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:48 ; elapsed = 00:01:07 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:50 ; elapsed = 00:01:09 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+----------+------+
+|      |Cell      |Count |
++------+----------+------+
+|1     |LUT1      |     1|
+|2     |LUT2      |     3|
+|3     |LUT3      |     3|
+|4     |LUT4      |     3|
+|5     |LUT5      |    13|
+|6     |LUT6      |    44|
+|7     |LUT6_2    |    69|
+|8     |MUXCY     |    29|
+|9     |RAM256X1S |     8|
+|10    |RAM32M    |     4|
+|11    |SRL16E    |    16|
+|12    |XORCY     |    27|
+|13    |FD        |    83|
+|14    |FDR       |    28|
+|15    |FDRE      |    63|
+|16    |FDS       |     2|
++------+----------+------+
+
+Report Instance Areas: 
++------+--------------+---------+------+
+|      |Instance      |Module   |Cells |
++------+--------------+---------+------+
+|1     |top           |         |   396|
+|2     |  U0          |pBlaze   |   396|
+|3     |    processor |kcpsm6   |   241|
+|4     |    rx        |uart_rx6 |    51|
+|5     |    tx        |uart_tx6 |    47|
++------+--------------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:26 ; elapsed = 00:00:45 . Memory (MB): peak = 2062.410 ; gain = 607.973
+Synthesis Optimization Complete : Time (s): cpu = 00:00:50 ; elapsed = 00:01:10 . Memory (MB): peak = 2062.410 ; gain = 1697.813
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 250 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 2092.852 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 201 instances were transformed.
+  (CARRY4) => CARRY8: 7 instances
+  FD => FDRE: 83 instances
+  FDR => FDRE: 28 instances
+  FDS => FDSE: 2 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 69 instances
+  RAM256X1S => RAM256X1S (MUXF7, MUXF7, MUXF8, RAMS64E, RAMS64E, RAMS64E, RAMS64E): 8 instances
+  RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 4 instances
+
+INFO: [Common 17-83] Releasing license: Synthesis
+141 Infos, 3 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:53 ; elapsed = 00:01:14 . Memory (MB): peak = 2092.852 ; gain = 1741.254
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 2092.852 ; gain = 0.000
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/system_pBlaze_0_0_synth_1/system_pBlaze_0_0.dcp' has been generated.
+INFO: [Coretcl 2-1174] Renamed 4 cell refs.
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00 . Memory (MB): peak = 2092.852 ; gain = 0.000
+WARNING: [Constraints 18-5210] No constraints selected for write.
+Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
+INFO: [Common 17-1381] The checkpoint 'D:/workspace/Vivado_2018.3/zcu104/fft2/fft2.runs/system_pBlaze_0_0_synth_1/system_pBlaze_0_0.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file system_pBlaze_0_0_utilization_synth.rpt -pb system_pBlaze_0_0_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Mon Feb 11 02:14:02 2019...

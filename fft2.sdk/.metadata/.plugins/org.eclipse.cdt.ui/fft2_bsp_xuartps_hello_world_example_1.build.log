@@ -1,0 +1,21 @@
+15:41:36 **** Auto Build of configuration Debug for project fft2_bsp_xuartps_hello_world_example_1 ****
+make all 
+Building file: ../src/xuartps_hello_world_example.c
+Invoking: ARM v8 gcc compiler
+aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xuartps_hello_world_example.o" -I../../fft2_bsp/psu_cortexa53_0/include -MMD -MP -MF"src/xuartps_hello_world_example.d" -MT"src/xuartps_hello_world_example.o" -o "src/xuartps_hello_world_example.o" "../src/xuartps_hello_world_example.c"
+Finished building: ../src/xuartps_hello_world_example.c
+ 
+Building target: fft2_bsp_xuartps_hello_world_example_1.elf
+Invoking: ARM v8 gcc linker
+aarch64-none-elf-gcc -Wl,-T -Wl,../src/lscript.ld -L../../fft2_bsp/psu_cortexa53_0/lib -o "fft2_bsp_xuartps_hello_world_example_1.elf"  ./src/xuartps_hello_world_example.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+Finished building target: fft2_bsp_xuartps_hello_world_example_1.elf
+ 
+Invoking: ARM v8 Print Size
+aarch64-none-elf-size fft2_bsp_xuartps_hello_world_example_1.elf  |tee "fft2_bsp_xuartps_hello_world_example_1.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  35076	   2392	  20800	  58268	   e39c	fft2_bsp_xuartps_hello_world_example_1.elf
+Finished building: fft2_bsp_xuartps_hello_world_example_1.elf.size
+ 
+
+15:41:36 Build Finished (took 171ms)
+

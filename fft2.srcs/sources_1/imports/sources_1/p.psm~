@@ -1,0 +1,2193 @@
+CONSTANT UART_Tx_data_present, 	00000001'b
+CONSTANT UART_Tx_half_full, 	00000010'b
+CONSTANT UART_Tx_full, 		00000100'b
+CONSTANT UART_Rx_data_present, 	00001000'b
+CONSTANT UART_Rx_half_full, 	00010000'b
+CONSTANT UART_Rx_full, 		00100000'b
+
+; Input Ports
+CONSTANT UART_RX6_status_input_port,		00
+CONSTANT UART_RX6_data_input_port,		01
+CONSTANT Extra_mem_input_port,			02
+
+; Output Ports
+CONSTANT UART_TX6_output_port,		00
+CONSTANT Extra_mem_lo_output_port, 	01
+CONSTANT Extra_mem_hi_output_port, 	02
+CONSTANT Extra_mem_output_port,		03
+CONSTANT irqs_output_port,		04
+
+CONSTANT reset_UART_port, 	01
+CONSTANT UART_tx_reset, 	00000001'b
+CONSTANT UART_rx_reset, 	00000010'b
+CONSTANT UART_reset, 		00000011'b
+
+;reset Tx and Rx
+CONSTANT UART_operate,		00000000'b ; Tx and Rx free to operate
+
+; Scratch Pad Memory locations
+CONSTANT x_7,		0'd		; Do not change the decimal numbers or load into SPM will not work
+CONSTANT x_6,		1'd
+CONSTANT x_5,		2'd
+CONSTANT x_4,		3'd
+CONSTANT x_3,		4'd
+CONSTANT x_2,		5'd
+CONSTANT x_1,		6'd
+CONSTANT x_0,		7'd
+CONSTANT x_grs,		8'd
+CONSTANT y_7,		9'd
+CONSTANT y_6,		10'd
+CONSTANT y_5,		11'd
+CONSTANT y_4,		12'd
+CONSTANT y_3,		13'd
+CONSTANT y_2,		14'd
+CONSTANT y_1,		15'd
+CONSTANT y_0,		16'd
+CONSTANT y_grs, 	17'd
+CONSTANT r_7, 		18'd
+CONSTANT r_6, 		19'd
+CONSTANT r_5, 		20'd
+CONSTANT r_4, 		21'd
+CONSTANT r_3, 		22'd
+CONSTANT r_2, 		23'd
+CONSTANT r_1, 		24'd
+CONSTANT r_0, 		25'd
+CONSTANT r_grs,		26'd
+CONSTANT r_sign,	27'd
+
+ ;----------------------------------------------------------------
+ ; If a bit is 0 = no, 1 = yes
+ ;
+ ; Bit 7	  6	5	4	3	2	1	0
+ ;     |	  |	|	|	                        |
+ ;     |	  |	|	|	                        [ Normal 
+ ;     |	  |	|	[ NaN 
+ ;     |	  |	[ Infinite
+ ;     |	  [ Zero
+ ;     [ Subnormal
+ ;
+ ;	
+ ;	An operand can have one of the following statuses:
+ ;	1) 	Normal
+ ;	2)	Subnormal
+ ;	3) 	Zero	+/-
+ ;	4)  Infinit +/-
+ ;	5) 	NaN
+ ;---------------------------------------------------------------
+CONSTANT op1_status, 28'd
+CONSTANT op2_status, 29'd
+	 
+;CONSTANT IEEE_754_DP_signals,	30'd 	
+	 ;----------------------------------------------------------------
+	 ; Bit 7	6	5	4	3	2	1	0
+	 ;     |	|	|	|	|
+	 ;     |	|	|	|	|_Inexact
+	 ;     |	|	|	|_Underflow
+	 ;     |	|	|_Overflow
+	 ;     |	|_Division by zero  
+	 ;     |_Invalid Opration: Quite Not A Nuber (qNaN)
+	 ;
+	 ;	
+	 ;---------------------------------------------------------------
+
+	 JUMP start	 
+	 JUMP start	 
+	 JUMP start	 
+	 JUMP start	 
+	      		 
+start: 
+       CALL reset_UART_macros
+;      JUMP uart_loop
+       
+       LOAD	s6, 00		; Start at address [s6,s5] = 0x000
+       LOAD 	s5, 00
+       LOAD 	s8, x_7		; Save at starting point = x_7
+       CALL 	load_8Bytes_from_ext_BRAM
+       LOAD 	s6, 00		; Start at address [s6,s5] = 0x008
+       LOAD 	s5, 08
+       LOAD 	s8, y_7		; Save at starting point = y_7
+       CALL	load_8Bytes_from_ext_BRAM
+
+       ; Clear the operand status, as the SPM holds its previous values
+       ;  even after picoBlaze gets reset.
+       LOAD    s0, 00
+       STORE   s0, x_grs
+       STORE   s0, y_grs
+       STORE   s0, r_grs
+       STORE   s0, r_sign
+       STORE   s0, op1_status
+       STORE   s0, op2_status
+
+
+       ; Load configuration at address 0xFFC
+       LOAD   s5, FC
+       LOAD   s6, 0F
+       CALL   Read_ext_mem	; config byte will be  returned in s7
+       TEST   s7, 01
+       JUMP   NZ, debug_mode
+
+       CALL 	arith_add_x_y
+       CALL   	write_result_to_external_memory
+       CALL 	invoke_done_interrupt
+finished_calculation:
+       JUMP	finished_calculation
+
+debug_mode:
+       CALL 	clear_screen
+
+       CALL 	arith_add_x_y
+       CALL   	write_result_to_external_memory
+
+       LOAD 	sB, welcome_msg'upper             ;Display message
+       LOAD 	sA, welcome_msg'lower
+       CALL 	send_message
+       CALL 	send_CRLF
+
+print_two_operands:	
+	LOAD s9, x_7
+	CALL SPM_print_hex	
+	CALL send_CRLF
+	LOAD s9, y_7
+	CALL SPM_print_hex	
+	CALL send_CRLF
+	LOAD s9, r_7
+	CALL SPM_print_hex	
+	CALL send_CRLF
+	CALL invoke_done_interrupt
+
+wait_for_start: 
+	CALL UART_RX
+	JUMP Z, wait_for_start                    ;check for UART timeout
+	COMPARE s5, "S"                           ;test character received
+	JUMP Z, print_two_operands
+	COMPARE s5, "s"
+	JUMP NZ, wait_for_start
+	JUMP print_two_operands
+
+
+STRING welcome$, "Welcome to KCPSM6 !!! (Debug Mode)"
+
+welcome_msg: 
+	     LOAD&RETURN s5, CR
+	     LOAD&RETURN s5, LF
+	     LOAD&RETURN s5, welcome$	     
+	     LOAD&RETURN s5, NUL
+
+;------------------------------------------------------------------------------------
+; Procedure:		UART_TX()
+; Registers Used:	
+; 	    		Bank0 : s6 , s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		delay_1ms
+;
+; Returns:		None
+;
+; Return Flags:		None
+;
+; Description:		Routine to send one character to the UART Transmitter (UART_TX6)
+;
+;	This routine will transmit the character provided in register 's5'.
+;------------------------------------------------------------------------------------
+UART_TX:
+	INPUT s6, UART_RX6_status_input_port
+	TEST s6, UART_Tx_full
+	JUMP NZ, UART_TX
+	OUTPUT s5, UART_TX6_output_port
+	; We need a bit of delay here: 10240 cycles : 2800 hex
+	; ((6 x 1us_delay_count]) + 8) clock cycles.			
+	;			; 100Mhz => 1us = 100,000 cycles
+	; 			We need 16,665 cycles = 4119 hex
+	LOAD s5, 19
+	LOAD s6, 41
+UART_TX_delay: 
+	SUB s5, 01
+   	SUBCY s6, 00
+   	JUMP NZ, UART_TX_delay
+	RETURN
+
+;------------------------------------------------------------------------------------
+; Procedure:		UART_RX()
+; Registers Used:	
+; 	    		Bank0 : s7, s6 , s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		s5 (character read)
+;
+; Return Flags:		Zero flag will be reset (Z=0) if read is successful.
+;
+; Description:		Routine to attempt to receive one character from the UART 
+; 			Receiver 'uart_rx6'.
+;
+; This routine will attempt to receive one character from the 'UART_RX6' macro, and if
+; successful, will return that character in register 's5' and the Zero flag will be
+; reset (Z=0).
+;
+; If there are no characters available to be read from the FIFO buffer within the
+; 'UART_RX6' macro then this routine will timeout after ~2,000 clock cycles (which is
+; 40us at 50MHz) with the Zero flag set (Z=1). This timeout scheme ensures that KCPSM6
+; cannot become stuck in this routine if no characters are received. If you do want
+; KCPSM6 to wait indefinitely for a character to be received then either modify this
+; routine or perform a test of the Zero flag and repeat the call to this routine as
+; shown in this example...
+;
+;          wait_for_UART_RX: CALL UART_RX
+;                            JUMP Z, wait_for_UART_RX
+;------------------------------------------------------------------------------------
+UART_RX: 
+	 LOAD s7, 167'd                 ;Timeout = 
+	      	  			;167 x (6 instructions x 2 clock cycles)
+rx_timeout: 
+	 INPUT s6, UART_RX6_status_input_port
+         TEST s6, UART_Rx_data_present             ;Z=0 and C=1 when data present
+         JUMP NZ, read_Rx
+         SUB s7, 1'd
+         RETURN Z                                  ;Timeout returns with Z=1 and C=0
+         JUMP rx_timeout
+read_Rx: INPUT s5, UART_RX6_data_input_port             ;read character from buffer
+         RETURN 
+
+;------------------------------------------------------------------------------------
+; Procedure:		reset_UART_macros()
+; Registers Used:	
+; 	    		Bank0 : None
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+;
+; Description:		Resets UART.
+; 			
+;------------------------------------------------------------------------------------
+reset_UART_macros: 
+	OUTPUTK UART_reset, reset_UART_port
+        OUTPUTK UART_operate, reset_UART_port
+	RETURN
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		delay_1ms()
+; Registers Used:	
+; 	    		Bank0 : s7, s6
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+;
+; Description:		1ms delay.
+; 			
+;			((6 x 1ms_delay_count1]) + 8) clock cycles.			
+;			; 125Mhz => 1ms = 125,000 cycles
+; 			We need 20,832 cycles = 5160 hex
+;------------------------------------------------------------------------------------
+delay_1ms:		  
+   LOAD s6, 60
+   LOAD s7, 51
+delay_1ms_loop: 
+   SUB s6, 01
+   SUBCY s7, 00
+   JUMP NZ, delay_1ms_loop
+   RETURN 
+
+;------------------------------------------------------------------------------------
+; Procedure:		send_CRLF()
+; Registers Used:	
+; 	    		Bank0 : s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		UART_TX()
+;
+;
+; Description:		Sends a CRLF to the UART.
+; 
+;------------------------------------------------------------------------------------
+send_CRLF: 
+	 LOAD s5, CR
+	 CALL UART_TX                              
+	 LOAD s5, LF
+	 CALL UART_TX                              
+	 RETURN
+
+;------------------------------------------------------------------------------------
+; Procedure:		send_message()
+; Registers Used:	
+; 	    		Bank0 : s5, sA, sB
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		UART_TX()
+;
+;
+; Description:		Sends a message to the UART.
+; 
+;			The start address of the message must be provided in [sB,sA].
+; 			Terminate the transmission with a NULL character (00 hex).
+;------------------------------------------------------------------------------------
+send_message: 
+	      CALL@ (sB, sA)
+	      COMPARE s5, 00                            ;terminate on NUL character
+	      RETURN Z
+	      CALL UART_TX
+	      ADD sA, 1'd
+	      ADDCY sB, 0'd
+	      JUMP send_message
+
+;------------------------------------------------------------------------------------
+; Procedure:		clear_screen()
+; Registers Used:	
+; 	    		Bank0 : s5
+;			Bank1 : None		
+;
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;		
+; Calls:		UART_TX()
+;
+; Description:		Clears the UART screen.
+;------------------------------------------------------------------------------------
+clear_screen: 
+	      LOAD s5, ESC                              ;clear terminal sequence
+              CALL UART_TX
+	      LOAD s5, "["
+	      CALL UART_TX
+	      LOAD s5, "2"
+	      CALL UART_TX
+	      LOAD s5, "J"
+	      CALL UART_TX
+	      LOAD s5, ESC
+	      CALL UART_TX
+	      LOAD s5, "["
+	      CALL UART_TX
+	      LOAD s5, "H"
+	      CALL UART_TX
+	      RETURN 
+
+;------------------------------------------------------------------------------------
+; Procedure:		print_hex_from_table()
+; Registers Used:	
+; 	    		Bank0 : sB, sA, s8, s7 , s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : [sB, sA] :Message upper/lower address
+;			Bank1 : None
+;
+; Calls:		UART_TX (s6, s5)
+;
+; Returns:		None
+;
+; Return Flags:		None
+;
+; Description:		Prints a 64-bit double precision number.
+;------------------------------------------------------------------------------------
+; print_hex_from_table:
+; 	LOAD s8, 8'd		; Double precision has 8 bytes
+; print_hex_loop:
+; 	CALL@ (sB, sA)		; read the first byte in s5
+; 	LOAD s7, s5		; Copy s5
+; 	SR0 s5	   		; shift the 4 bit on he left to the right
+; 	SR0 s5
+; 	SR0 s5
+; 	SR0 s5
+; 	COMPARE s5, 10'd
+; 	JUMP C, less_or_eq_to_nine
+; 	JUMP greater_than_nine	
+; less_or_eq_to_nine:
+; 	ADD s5, 48'd
+; 	JUMP done_adding
+; greater_than_nine:
+; 	ADD s5, 87'd
+; done_adding:
+; 	CALL UART_TX		; send it to UART via s5
+; 	;--- Second nibble
+; 	AND s7, 0f 		; select the 4 bit on the right
+; 	COMPARE s7, 10'd
+; 	JUMP C, less_or_eq_to_nine2
+; 	JUMP greater_than_nine2
+; less_or_eq_to_nine2:
+; 	ADD s7, 48'd
+; 	JUMP done_adding2
+; greater_than_nine2:
+; 	ADD s7, 87'd
+; done_adding2:
+; 	LOAD s5, s7
+; 	CALL UART_TX		; send it to UART via s5
+; done_print_one_hex:
+; 	ADD sA, 1'd		; read the next byte
+; 	ADDCY sB, 0'd
+; 	SUB s8, 1'd		; decrement the counter 
+; 	TEST s8, FF		; Is cunter zero?
+; 	RETURN Z
+; 	JUMP print_hex_loop
+; 	RETURN
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		reg_print_hex()
+; Registers Used:	
+; 	    		Bank0 : s5, s7
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : s5 : content to print 
+;			Bank1 : None
+;
+; Calls:		UART_TX 
+;
+; Returns:		None
+;
+; Return Flags:		None
+;
+; Description:		Prints an 8-bit number stored in s5 in hex formatx
+;------------------------------------------------------------------------------------
+reg_print_hex:
+	LOAD s7, s5		; Copy s5
+	SR0 s5	   		; shift the 4 bit on the left to the right
+	SR0 s5
+	SR0 s5
+	SR0 s5
+	COMPARE s5, 10'd
+	JUMP C, less_or_eq_to_nine3
+	JUMP greater_than_nine3
+less_or_eq_to_nine3:
+	ADD s5, 48'd
+	JUMP done_adding3
+greater_than_nine3:
+	ADD s5, 87'd
+done_adding3:
+	CALL UART_TX		; send it to UART via s5
+	;--- Second nibble
+	AND s7, 0F 		; select the 4 bit on the right
+	COMPARE s7, 10'd
+	JUMP C, less_or_eq_to_nine4
+	JUMP greater_than_nine4
+less_or_eq_to_nine4:
+	ADD s7, 48'd
+	JUMP done_adding4
+greater_than_nine4:
+	ADD s7, 87'd
+done_adding4:
+	LOAD s5, s7
+	CALL UART_TX		; send it to UART via s5
+	RETURN
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		SPM_print_hex()
+; Registers Used:	
+; 	    		Bank0 : s9, s8, s7, s5,
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : s6 
+;			Bank1 : None
+;
+; Calls:		UART_TX 
+;
+; Returns:		None
+;
+; Return Flags:		None
+;
+; Description:		Prints a 64-bit double precision number starting from location 
+; index (s9) of SPM.
+;------------------------------------------------------------------------------------
+SPM_print_hex:
+	LOAD s8, 8'd		; Double precision has 8 bytes
+print_hex_loop:
+	FETCH s5, (s9)
+	LOAD s7, s5		; Copy s5
+	SR0 s5	   		; shift the 4 bit on the left to the right
+	SR0 s5
+	SR0 s5
+	SR0 s5
+	COMPARE s5, 10'd
+	JUMP C, less_or_eq_to_nine
+	JUMP greater_than_nine	
+less_or_eq_to_nine:
+	ADD s5, 48'd
+	JUMP done_adding
+greater_than_nine:
+	ADD s5, 87'd
+done_adding:
+	CALL UART_TX		; send it to UART via s5
+	;--- Second nibble
+	AND s7, 0f 		; select the 4 bit on the right
+	COMPARE s7, 10'd
+	JUMP C, less_or_eq_to_nine2
+	JUMP greater_than_nine2
+less_or_eq_to_nine2:
+	ADD s7, 48'd
+	JUMP done_adding2
+greater_than_nine2:
+	ADD s7, 87'd
+done_adding2:
+	LOAD s5, s7
+	CALL UART_TX		; send it to UART via s5
+done_printing_one_hex:
+	ADD s9, 01		; read the next byte
+	SUB s8, 1'd		; decrement the counter 
+	TEST s8, FF		; Is cunter zero?
+	RETURN Z
+	JUMP print_hex_loop
+	RETURN
+
+
+;-----------------------------------------------------------------------------------
+; Software Implementation of Floating-Point Arithmetic, Double-Precision (64 bit).
+;
+;	beta(radix) = 2, k(width) = 64, p(precision) = 53, e_max = 1023
+;
+
+
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		add_dp()
+; Registers Used:	
+; 	    		Bank0 : 
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Scratch Pad Memory (SPM-256): position 0 to 15.
+;			x: SPM position 0 to 7.
+;			y: SPM position 8 to 15.						
+;
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		Scratch Pad Memory (SPM-256): position 0 to 7.
+; 			r: SPM position 0 to 7.
+; 
+; Return Flags:		None
+;
+; Description:		Adds two double-precisin IEEE-754 numbers.
+; 			Computes x + y and returns the result in r.  
+; 			x + y = r.
+;------------------------------------------------------------------------------------
+add_dp:
+	
+	RETURN
+
+;------------------------------------------------------------------------------------
+; Procedure:		load_8Bytes_from_ext_BRAM()
+; Registers Used:	
+; 	    		Bank0 : s6, s5, s9
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : [s6, s5] : The address of starting point of memory
+;			Bank1 : None
+;
+; Calls:		Read_ext_mem()
+;
+; Returns:		8 bytes in SPM, starts  at s8.
+; 
+; Return Flags:		None
+;
+; Description:		Load 8 sequential bytes into SPM starting at position set in s8.
+;------------------------------------------------------------------------------------
+load_8Bytes_from_ext_BRAM:
+ 	LOAD s9, s8			; Copy s8
+ 	ADD s9, 8'd			; After 8 reads the the loop must stop		
+read_8bytes_ext_BRAM_loop:
+	CALL	  Read_ext_mem		; Read the first byte and save it in s7
+	STORE     s7, (s8)
+	ADD   	  s5, 01		; Point to the next byte
+	ADDCY 	  s6, 00
+	ADD   	  s8, 1'd		; Increment SPM pointer by 1
+	COMPARE   s8, s9		; 8 bytes reached ?	
+	JUMP 	  C,  read_8bytes_ext_BRAM_loop ; Jump if s8 is less than s9
+	RETURN
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		Read_ext_mem()
+; Registers Used:	
+; 	    		Bank0 : s7, s6, s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		s7: The read data
+;
+; Return Flags:		None
+;
+; Description:		Reads the external memory.
+;
+;			[s6, s5] must contains the read address (12 bits). 
+;			- Bit 7 of s6 is clock  enable.     
+;			Uppder nibble of s6 must contain 8, to enable the block RAM.
+;------------------------------------------------------------------------------------
+Read_ext_mem:
+	OR     s6, 80				; Enable BRAM clock
+	OUTPUT s5, Extra_mem_lo_output_port
+	OUTPUT s6, Extra_mem_hi_output_port
+	OR s5, s5				; Delay
+	INPUT  s7, Extra_mem_input_port
+	AND    s6, 7F				; Disable BRAM clock
+	OUTPUT s6, Extra_mem_hi_output_port
+	RETURN
+
+;------------------------------------------------------------------------------------
+; Procedure:		Write_ext_mem()
+; Registers Used:	
+; 	    		Bank0 : s7, s6, s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		None
+;
+; Return Flags:		None
+;
+; Description:		Writes to external memory.
+;
+;			[s6, s5] must contains the write address. 
+;			- Bit 7 of s6 is Clock Enable
+;			- Bit 6 of s6 is Write Enable
+;			- Write at address:  EW00_AAAA_AAAA_AAAA			
+;			- Uppder nibble of s6 must contain C, to enable the block RAM
+;			       and write enable.
+;			- s7 regiser has 8-bit data to be written at location [s6, s5].       
+;
+;------------------------------------------------------------------------------------
+Write_ext_mem:
+	OR     s6, C0	; Enable block RAM and write enable.	
+	OUTPUT s7, Extra_mem_output_port
+	OUTPUT s5, Extra_mem_lo_output_port
+	OUTPUT s6, Extra_mem_hi_output_port
+	OR     s5, s5	; Delay 
+	AND    s6, 3F	; disable block RAM and write enable.	
+	OUTPUT s6, Extra_mem_hi_output_port
+	RETURN
+
+
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		SPM_load_8Bytes()
+; Registers Used:	
+; 	    		Bank0 : sB, sA, s8, s6, s5
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : s5
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		None
+; 
+; Return Flags:		None
+;
+; Description:		Load 8 sequential bytes into SPM starting at position set in s5.
+;------------------------------------------------------------------------------------
+; SPM_load_8Bytes:
+; 	LOAD s8, s5		; Set SPM starting position
+; 	LOAD s6, s5
+; 	ADD s6, 8'd
+; SPM_load_loop:
+; 	CALL@ (sB, sA)		; read the first byte in s5
+; 	STORE s5, (s8)
+; 	ADD sA, 1'd		; read the next byte
+; 	ADDCY sB, 0'd
+; 	ADD s8, 1'd		; Increment SPM pointer by 1
+; 	COMPAREARE s8, s6		; 8 bytes reached ?	
+; 	JUMP C,SPM_load_loop
+; 	RETURN
+
+
+
+;------------------------------------------------------------------------------------
+; Procedure:		arith_add_x_y()
+; Registers Used:	
+; 	    		Bank0 : All
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : 
+;			Bank1 : None
+;			SPM   : x = [x_7, x_6, ..., x_0]
+;			      	y = [y_7, y_6, ..., y_0]						
+;
+; Calls:		None
+;
+; Returns:		The arithmetic result in SPM:
+;  			        r = [r_7, r_6, ..., r_0]
+; 
+; Return Flags:		None
+;
+; Description:		Adds two Double-precision floating point numbers.
+; 			This procedure always add. For subtraction set the sign of second
+;			     operand to negative as x + (-y) = x - y.          
+;------------------------------------------------------------------------------------
+arith_add_x_y:
+
+	; Set op1 and op2 status flags: Check for subnormals, zeros, NaNs and infinities.
+	
+set_op1_status:
+ 	; Check if the op1 (ex) exponent bits are all zero      
+ 	; Extract ex : [s7, s6]
+	FETCH	s7, x_7	       
+	FETCH	s6, x_6
+	AND	s7, 7F 		; zero the sign bit
+	TEST 	s6, F0
+	TESTCY 	s7, 7F 
+	JUMP	NZ, ex_not_zero
+	
+ex_zero:	
+	Call	load_mx
+	TEST	s6, 0F	
+	TESTCY	s5, FF
+	TESTCY	s4, FF
+	TESTCY	s3, FF
+	TESTCY	s2, FF
+	TESTCY	s1, FF
+	TESTCY	s0, FF
+	JUMP	NZ, op1_is_subnormal
+	
+op_1_is_zero:	
+	; set op1 status flag to "Zero"   -- status bits =  SZIN 
+	FETCH	s0, op1_status	
+	OR 	s0, 40		; op1 is zero
+	STORE	s0, op1_status
+	JUMP	set_op2_status
+		
+op1_is_subnormal:
+	; set op1 status flag to "Subnormal"
+	FETCH	s0, op1_status	
+	OR 	s0, 80		; op1 is subnormal
+	STORE	s0, op1_status	
+	JUMP	set_op2_status
+		
+ex_not_zero:
+ 	; Check if the op1 (ex) exponent bits are all one
+ 	; Extract ex : [s7, s6]
+	FETCH	s7, x_7	       
+	FETCH	s6, x_6
+	AND	s7,  7F 		; zero the sign bit
+	AND	s6,  F0			; zero the low nibble
+	COMPARE      s6,  F0	
+	COMPARECY    s7,  7F 
+	JUMP	NZ, ex_not_all_one
+
+ex_all_one:
+	; Check if all bits of significand are zero
+	Call	load_mx
+	TEST	s6,  FF
+	TESTCY	s5,  FF
+	TESTCY	s4,  FF
+	TESTCY	s3,  FF
+	TESTCY	s2,  FF
+	TESTCY	s1,  FF
+	TESTCY	s0,  FF
+	JUMP	Z, op1_is_inf
+	
+op1_is_NaN:	
+	; set op1 status flag to "NaN" -- status bits =  SZIN --
+	FETCH	s0, op1_status	
+	OR 	s0,  10		; op1 is NaN
+	STORE	s0, op1_status	
+	JUMP	set_op2_status
+		
+op1_is_inf:	
+	; set op1 status flag to "Infinite" 
+	FETCH	s0, op1_status	
+	OR 	s0,  20		; op1 is infinite
+	STORE	s0, op1_status	
+	JUMP	set_op2_status
+
+ex_not_all_one:	
+	; Here we conclude that ex is not all zeros and not all ones.
+	;  therefore op1 must be a normal operand.
+	; set op1 status flag to "Infinite" 
+	FETCH	s0, op1_status	
+	OR 	s0,  01		; op1 is normal
+	STORE	s0, op1_status	
+
+set_op2_status:	
+ 	; Check if the op2 (ey) exponent bits are all zero      
+ 	; Extract ex : [s7, s6]
+	FETCH	s7, y_7	       
+	FETCH	s6, y_6
+	AND	s7, 7F 		; zero the sign bit
+	TEST 	s6, F0
+	TESTCY 	s7, 7F 
+	JUMP	NZ, ey_not_zero
+	
+ey_zero:	
+	; Check if all bits of significand are zero
+	CALL load_my	
+	TEST	s6, 0F
+	TESTCY	s5, FF
+	TESTCY	s4, FF
+	TESTCY	s3, FF
+	TESTCY	s2, FF
+	TESTCY	s1, FF
+	TESTCY	s0, FF
+	JUMP	NZ, op2_is_subnormal
+	
+op_2_is_zero:	
+	; set op1 status flag to "Zero"   -- status bits =  SZIN --
+	FETCH	s0, op2_status	
+	OR 	s0,  40		; op2 is zero
+	STORE	s0, op2_status
+	JUMP	ops_set_status_done
+		
+op2_is_subnormal:
+	; set op1 status flag to "Subnormal"
+	FETCH	s0, op2_status	
+	OR 	s0,  80		; op1 is subnormal
+	STORE	s0, op2_status	
+	JUMP	ops_set_status_done
+		
+ey_not_zero:
+ 	; Check if the op2 (ex) exponent bits are all one
+ 	; Extract ex : [s7, s6]
+	FETCH	s7, y_7	       
+	FETCH	s6, y_6
+	AND		s7,  7F 		; zero the sign bit
+	AND		s6,  F0			; zero the low nibble
+	COMPARE 	s6,  F0	
+	COMPARECY 	s7,  7F 
+	JUMP	NZ, ey_not_all_one
+
+ey_all_one:
+	; Check if all bits of significand are zero
+	CALL load_my	
+	TEST	s6,  FF
+	TESTCY	s5,  FF
+	TESTCY	s4,  FF
+	TESTCY	s3,  FF
+	TESTCY	s2,  FF
+	TESTCY	s1,  FF
+	TESTCY	s0,  FF
+	JUMP	Z, op2_is_inf
+	
+op2_is_NaN:	
+	; set op1 status flag to "NaN" -- status bits =  SZIN --
+	FETCH	s0, op2_status	
+	OR 	s0,  10		; op1 is NaN
+	STORE	s0, op2_status	
+	JUMP	ops_set_status_done
+		
+op2_is_inf:	
+	; set op1 status flag to "Infinite" 
+	FETCH	s0, op2_status	
+	OR 	s0,  20		; op1 is infinite
+	STORE	s0, op2_status	
+	JUMP	ops_set_status_done
+
+ey_not_all_one:	
+	; Here we conclude that ey is not all zeros and not all ones.
+	;  therefore op1 must be a normal operand.
+	FETCH	s0, op2_status	
+	OR 	s0,  01		; op2 is normal
+	STORE	s0, op2_status	
+	
+ops_set_status_done:
+
+	FETCH 	s1, op1_status	; read the ops status
+	FETCH 	s2, op2_status	; read the ops status
+	
+	; We check op1 for 
+	; 1) NaN
+	;		Yes:	Check op2, if NaN then return Y_NaN else return X_NaN	
+	;		No:	Go to step 2.
+	; 2) Infinity
+	;		Yes:	Check op2, if Inf then return_NaN_Inf
+	;		No:	Go to step 3.
+	; 3) Zero
+	;		Yes:	return y
+	;		No:	swap_step
+	
+	; Check if op1 is NaN
+	TEST	s1, 10
+	JUMP	Z, final_op1_not_NaN		; No
+
+final_op1_NaN:					; Yes
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP 	NZ, return_NAN		; Yes
+	JUMP	return_x_NAN
+
+return_NAN:
+	; check op1 NaN bit
+	FETCH	s3, x_6
+	TEST	s3, 08
+	JUMP	Z, return_x_NAN
+	; op1 NaN bit is 1, so check op2 NaN bit
+	FETCH	s3, y_6
+	TEST	s3, 08
+	JUMP	Z, return_y_NAN
+	JUMP	return_x_NAN
+
+final_op1_not_NaN:
+	;	+inf + + inf = +inf
+	;	+inf + - inf = +NaN
+	;	-inf + + inf = +NaN
+	;	-inf + - inf = -inf
+	; infinity sign is the AND of both operands' sign bits.
+	; Result NaN bit is XOR of both operands' sign bits.
+
+	; Check if op1 is Inf
+	TEST	s1, 20
+	JUMP	Z, final_op1_not_Inf		; No
+
+final_op1_Inf:					; Yes
+	; Check if op2 is Inf	
+	TEST	s2, 20
+	JUMP	NZ, return_y_NAN_Inf		; Yes
+	; Check if op2 is NaN	
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN		; Yes
+	JUMP	return_x
+	
+final_op1_not_Inf:	
+		
+	; Check if op1 is zero, if yes the result is op2
+	TEST	s1, 40
+	JUMP	Z, check_final_op2		; No
+	
+final_op1_is_zero:
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN		;Yes
+	JUMP	return_y
+	
+	; Op1 is not NaN, Inf, and zero, so we conclude op1 is (sub)normal.	
+
+	; We check op2 for 
+	; 1) NaN
+	;		Yes:	return_NaN_Inf
+	;		No:		Go to step 2.
+	; 2) Infinity
+	;		Yes:	return_NaN_Inf
+	;		No:		return x
+	; 3) Zero
+	;		Yes:	return zero
+	;		No:		swap_step
+
+check_final_op2:	
+	; Check if op2 is NaN
+	TEST	s2, 10
+	JUMP	NZ, return_y_NAN		;Yes
+
+final_op2_not_NaN:					; No
+
+	;	+inf + + inf = +inf
+	;	+inf + - inf = +NaN
+	;	-inf + + inf = +NaN
+	;	-inf + - inf = -inf
+	; infinity sign is the AND of both operands' sign bits.
+	; Result NaN bit is XOR of both operands' sign bits.
+
+	; Check if op2 is Inf
+	TEST	s2, 20
+	JUMP	NZ, return_y		; Yes
+
+final_op2_not_Inf:					; No
+	; Check if op2 is zero
+	TEST	s2, 40
+	JUMP	NZ, return_x			; Yes
+	
+
+	; Both operators are (sub)normal. Perform the addition.
+	; op1 = subnormal	op2 = subnormal		- Normal procedure works
+	;	ex = 0				ey = 0  
+	; op1 = subnormal	op2 = normal			- hidden 0 must be injected.
+	;	ex = 0				ey != 0			
+	; op1 = normal		op2 = subnormal		- hidden 0 must be injected.
+	;	ex != 0				ey = 0
+	; op1 = normal		op2 = normal	  		- Normal procedure works
+	JUMP 	COMP_swap_ex
+
+return_x:
+	FETCH	s7, x_7	       
+	FETCH	s6, x_6	       
+	FETCH	s5, x_5	       
+	FETCH	s4, x_4	       
+	FETCH	s3, x_3	       
+	FETCH	s2, x_2	       
+	FETCH	s1, x_1	       
+	FETCH	s0, x_0	      
+	STORE 	s7, r_7
+	STORE 	s6, r_6
+	STORE 	s5, r_5
+	STORE 	s4, r_4
+	STORE 	s3, r_3
+	STORE 	s2, r_2
+	STORE 	s1, r_1
+	STORE 	s0, r_0
+	RETURN
+
+return_x_NAN:
+	FETCH	s7, x_7	       
+	FETCH	s6, x_6	       
+	OR	s6, 08		; ensure the result is NaN
+	FETCH	s5, x_5	       
+	FETCH	s4, x_4	       
+	FETCH	s3, x_3	       
+	FETCH	s2, x_2	       
+	FETCH	s1, x_1	       
+	FETCH	s0, x_0	      
+	STORE 	s7, r_7
+	STORE 	s6, r_6
+	STORE 	s5, r_5
+	STORE 	s4, r_4
+	STORE 	s3, r_3
+	STORE 	s2, r_2
+	STORE 	s1, r_1
+	STORE 	s0, r_0
+	RETURN
+
+return_x_NAN_Inf:
+	; Read operand signs
+	FETCH	s9, x_7
+	FETCH	s8, y_7
+	AND	s9, 80	  	; op1 sign bit
+	AND	s8, 80		; op2 sign bit
+	;	+inf + + inf = +inf
+	;	+inf + - inf = +NaN
+	;	-inf + + inf = +NaN
+	;	-inf + - inf = -inf
+	; infinity sign is the AND of both operands' sign bits.
+	; Result NaN bit is XOR of both operands' sign bits.
+	LOAD	sA, s9		; copy s9 into sA
+	AND	sA, s8	
+
+	XOR	s9, s8
+	TEST 	s9, 80
+	JUMP	Z, NaN_bit_off
+	
+	LOAD 	s8, 08	
+	JUMP	done_applying_NaN_bit
+	
+NaN_bit_off:
+	LOAD	s8, 00	
+	
+done_applying_NaN_bit:
+	FETCH	s7, x_7	       
+	OR	s7, sA		; Apply infinity sign
+	FETCH	s6, x_6	       
+	OR	s6, s8		; Apply Result NaN bit
+	FETCH	s5, x_5	       
+	FETCH	s4, x_4	       
+	FETCH	s3, x_3	       
+	FETCH	s2, x_2	       
+	FETCH	s1, x_1	       
+	FETCH	s0, x_0	      
+	STORE 	s7, r_7
+	STORE 	s6, r_6
+	STORE 	s5, r_5
+	STORE 	s4, r_4
+	STORE 	s3, r_3
+	STORE 	s2, r_2
+	STORE 	s1, r_1
+	STORE 	s0, r_0
+	RETURN
+
+return_y:
+	FETCH	s7, y_7	       
+	FETCH	s6, y_6	       
+	FETCH	s5, y_5	       
+	FETCH	s4, y_4	       
+	FETCH	s3, y_3	       
+	FETCH	s2, y_2	       
+	FETCH	s1, y_1	       
+	FETCH	s0, y_0	      
+	STORE 	s7, r_7
+	STORE 	s6, r_6
+	STORE 	s5, r_5
+	STORE 	s4, r_4
+	STORE 	s3, r_3
+	STORE 	s2, r_2
+	STORE 	s1, r_1
+	STORE 	s0, r_0
+	RETURN
+
+return_y_NAN:
+	FETCH	s7, y_7	       
+	FETCH	s6, y_6	       
+	OR	s6, 08		; ensure the result is NaN
+	FETCH	s5, y_5	       
+	FETCH	s4, y_4	       
+	FETCH	s3, y_3	       
+	FETCH	s2, y_2	       
+	FETCH	s1, y_1	       
+	FETCH	s0, y_0	      
+	STORE 	s7, r_7
+	STORE 	s6, r_6
+	STORE 	s5, r_5
+	STORE 	s4, r_4
+	STORE 	s3, r_3
+	STORE 	s2, r_2
+	STORE 	s1, r_1
+	STORE 	s0, r_0
+	RETURN
+
+return_y_NAN_Inf:
+	; Read operand signs
+	FETCH	s9, x_7
+	FETCH	s8, y_7
+	AND	s9, 80	  	; op1 sign bit
+	AND	s8, 80		; op2 sign bit
+	;	+inf + + inf = +inf
+	;	+inf + - inf = +NaN
+	;	-inf + + inf = +NaN
+	;	-inf + - inf = -inf
+	; infinity sign is the AND of both operands' sign bits.
+	; Result NaN bit is XOR of both operands' sign bits.
+	LOAD	sA, s9		; copy s9 into sA
+	AND	sA, s8	
+	XOR	s9, s8
+
+	FETCH	s7, y_7	
+	; Apply the sign
+	TEST	sA, 80
+	JUMP	NZ, set_sign_bit_to_1	
+set_sign_bit_to_0:
+	AND	s7, 7F	
+	JUMP 	set_sign_bit_done	
+set_sign_bit_to_1:	
+	OR	s7, 80
+set_sign_bit_done:
+	       
+	FETCH	s6, y_6	   
+	; Apply the sign
+	TEST	s9, 80
+	JUMP	NZ, set_NaN_bit_to_1	
+set_NaN_bit_to_0:
+	AND	s6, F7
+	JUMP 	set_NaN_bit_done	
+set_NaN_bit_to_1:	
+	OR	s6, 08
+set_NaN_bit_done:
+
+	FETCH	s5, y_5	       
+	FETCH	s3, y_3	       
+	FETCH	s2, y_2	       
+	FETCH	s1, y_1	       
+	FETCH	s0, y_0	      
+	STORE 	s7, r_7
+	STORE 	s6, r_6
+	STORE 	s5, r_5
+	STORE 	s4, r_4
+	STORE 	s3, r_3
+	STORE 	s2, r_2
+	STORE 	s1, r_1
+	STORE 	s0, r_0
+	RETURN
+
+COMP_swap_ex:
+       ; Extract ex : [s1, s0]
+       FETCH s1, x_7	       
+       FETCH s0, x_6
+       AND s1, 7F		; Set sign bit to zero
+       SR0 s1  			; shift right by 4 bits to remove the 4-bits
+       SRA s0        		;	of fraction on the right.
+       SR0 s1
+       SRA s0        
+       SR0 s1
+       SRA s0        
+       SR0 s1
+       SRA s0        
+
+       ; Extract ey: [s3, s2]
+       FETCH s3, y_7
+       FETCH s2, y_6
+       AND s3, 7F		; shift right by 4 bits to remove the 4-bits
+       SR0 s3  			;	of fraction on the right.
+       SRA s2        
+       SR0 s3  			
+       SRA s2        
+       SR0 s3  			
+       SRA s2        
+       SR0 s3  			
+       SRA s2        
+
+       ; COMPARE ex [s1, s0] VS ey [s3, s2]
+       COMPARE  s0, s2
+       COMPARECY s1, s3		
+       JUMP  C, ex_less_than_ey					
+ex_greater_equal_than_ey:
+       JUMP swap_done 	
+ex_less_than_ey:
+       ; swap x with y
+       CALL swap_operands
+
+       ; Swap ex [s1, s0] with ey [s3, s2]
+       LOAD s6, s3 
+       LOAD s5, s2
+       LOAD s3, s1
+       LOAD s2, s0
+       LOAD s1, s6
+       LOAD s0,	s5
+       
+    ; Swap the operands' status		
+	FETCH 	s5, op1_status	       
+	FETCH 	s6, op2_status	       
+	STORE	s5, op2_status
+	STORE	s6, op1_status
+	
+swap_done:		
+       ;-----------------------------------------------------------
+       ; Register status:
+       ;		ex is in [s1, s0]
+       ; 	ey is in [s3, s2]
+       ;		assured ex > ey   
+       ; SPM status:	
+       ;    	[x_7, x_6, ..., x_0]  [grs] x_grs_bits - Original
+       ;    	[y_7, y_6, ..., y_0]  [grs] y_grs_bits - Original
+       ;-----------------------------------------------------------
+		
+       ; We set "er" as "ex" 
+       LOAD s6, s1			; Save "er" in SPM
+       LOAD s5, s0	       	; Format: SEEE_EEEE EEEE_MMMM		 
+       SL0 s5				; Shift to left by 4-bits
+       SLA s6
+       SL0 s5
+       SLA s6
+       SL0 s5
+       SLA s6
+       SL0 s5
+       SLA s6
+  
+       STORE s6, r_7				; Write the result in SPM
+       STORE s5, r_6		
+       
+       ;-----------------------------------------------------------
+       ; Register status:
+       ;		ex is in [s1, s0]
+       ; 	ey is in [s3, s2]
+       ; SPM status:	
+       ;    	[x_7, x_6, ..., x_0]  [grs] x_grs_bits - Original
+       ;    	[y_7, y_6, ..., y_0]  [grs] y_grs_bits - Original
+       ; 	[r_7, r_6,	..., r_1]  [grs] r_grs_bits: 
+       ; 	result calculated:	[?EEE_EEEE, EEEE_0000  , ?  , ?]  [???]
+       ;-----------------------------------------------------------		
+
+	; Is op2 subnormal? yes: inject hidden 0, No: Inject hidden 1
+	FETCH 	s4, op2_status
+	TEST	s4,  80
+	JUMP	NZ, subnormal_involved
+
+	; not a subnormal
+	LOAD 	s4,  10
+	JUMP	subnormal_test_done
+
+subnormal_involved:
+	LOAD 	s4,  00
+
+subnormal_test_done:
+       FETCH sF, y_6				; Read "my"	into registers						
+       AND   sF,  0F			; zero the upper nibble	(4-bit exponent value)	
+       OR    sF, s4				; Bring the hidden 1/0 into existence!
+       FETCH sE, y_5									
+       FETCH sD, y_4
+       FETCH sC, y_3
+       FETCH sB, y_2
+       FETCH sA, y_1
+       FETCH s9, y_0
+       LOAD  s8, 00 				; set s8 to zero, We will use s8 to set guard, round, sticky bits
+
+       ;-----------------------------------------------------------
+       ; Register status:
+       ;		ex is in [s1, s0]
+       ; 	ey is in [s3, s2]
+       ;		my in [sF, sE, ..., s9] , [s8] grs  (original)
+       ;		sF = 1X  (hidden 1 appears in LSB of upper nibble)		      	       	    	       
+       ;
+       ; SPM status:	
+       ;    	[x_7, x_6, ..., x_0]  [grs] x_grs_bits - Original
+       ;    	[y_7, y_6, ..., y_0]  [grs] y_grs_bits - Original
+       ; 	[r_7, r_6,	..., r_1]  [grs] r_grs_bits: 
+       ; 	result calculated:	[?EEE_EEEE, EEEE_0000  , ?  , ?]  [???]
+       ;-----------------------------------------------------------		
+
+	; Significand alignment						
+	
+	; ex = Ex - bias + 1 - nx
+	; ey = Ey - bias + 1 - ny
+	; ex - nx - ey + ny  
+	;  where nx and ny are normal bits. means if op is normal nx = 1
+	;  otheriwse nx = 0.
+
+	; Is op1 normal? 
+	FETCH 	s4, op1_status
+	TEST	s4,  01
+	JUMP	NZ,  op1_is_normal_nx_is_1
+	ADD  s0, 01     	  			; nx = 0
+	ADDCY s1, 00
+
+op1_is_normal_nx_is_1:	
+	; Is op2 normal? 
+	FETCH 	s4, op2_status
+	TEST	s4,  01
+	JUMP	NZ, op2_is_normal_ny_is_1
+	ADD  s2, 01     	  			; ny = 0
+	ADDCY s3, 00
+
+op2_is_normal_ny_is_1:
+       SUB  s0, s2     	      	;ex - ey
+       SUBCY s1, s3
+	
+       JUMP Z, my_mantisa_shift_right_done	; ex = ey so (ex - ey) will set zero flag
+       	       					;  thus we don't need to shift mantisa right  			       
+
+       ; Shift "my" to right by (ex - ey) STOREd in [s1, s0]:
+       SR0   sF        							
+       SRA   sE			
+       SRA   sD
+       SRA   sC
+       SRA   sB
+       SRA   sA
+       SRA   s9
+       SRA   s8				; extra bits: gaurd-round-sticky-xxxxx
+       SUB   s0,  01      ; subtract by 1 to take into account the manual
+       SUBCY s1,  00		; first round shift:  ex - ey - 1
+       JUMP  Z, my_mantisa_shift_right_loop_done
+
+
+my_mantisa_shift_right_loop:              
+       SR0   sF			; 52 bit "my" mantisa right shift by 1-bit
+       SRA   sE			;  loop for (ex - ey - 1) times
+       SRA   sD
+       SRA   sC
+       SRA   sB
+       SRA   sA
+       SRA   s9
+       SRA   s8			; extra bits: gaurd-round-sticky-xxxxx
+       ; if sticky bit of s8 ever becomes 1 set sticky bit of op2 to 1
+       TEST  s8, 20
+       JUMP  Z, dont_set_sticky_bit_y
+       LOAD  s2, 20
+       STORE s2, y_grs 				       
+dont_set_sticky_bit_y:
+       SUB   s0, 01
+       SUBCY s1, 00
+       JUMP  NZ, my_mantisa_shift_right_loop
+
+my_mantisa_shift_right_loop_done:
+								; Save "my" back to SMP
+       FETCH s7, y_6				; read byte y_6 from SPM		
+       AND   s7, F0			; retain left nibble content which belongs to exponent
+       OR    s7, sF				; combine "my" into y_6
+       STORE s7, y_6								
+       STORE sE, y_5								
+       STORE sD, y_4								
+       STORE sC, y_3								
+       STORE sB, y_2								
+       STORE sA, y_1								
+       STORE s9, y_0
+
+       FETCH 	s2, y_grs			; Update the grs bits for y
+       OR	s8, s2				; Apply sticky bit
+       OR	s2, s8
+       STORE 	s2, y_grs
+
+my_mantisa_shift_right_done:
+       ;---------------------------------------------------------------------------------------------
+       ; Register status:
+       ;		my in [sF, sE, ..., s9] , [s8] grs (mantisa shifted right to have
+       ; 		           			    the adjusted exponent)
+       ; Assumptions:
+       ;		ex = ey = er				      	     
+       ; SPM status:	
+       ;    	[x_7, x_6, ..., x_0]  [grs] x_grs_bits - Original
+       ;    	[y_7, y_6, ..., y_0]  [grs] y_grs_bits - my shifted right. 
+       ; 	[r_7, r_6,	..., r_1]  [grs] r_grs_bits: 
+       ; 	result calculated:	[?EEE_EEEE, EEEE_0000  , ?  , ?]  [???]
+       ;---------------------------------------------------------------------------------------------
+
+       ; Check the sign of x nd y: sx and sy
+       ; + x + y   -----> perform (x + y)	sr is +
+       ; + x - y   -----> perform (x - y)	sr is +		mr might be negative (Carry Set)
+       ; - x + y   -----> perform (x - y) 	sr is -		mr might be negative (Carry Set)   
+       ; - x - y   -----> perform (x + y) 	sr is -
+
+       FETCH s0, x_7				; Read sign bit of x	
+       FETCH s1, y_7				; read sign bit of y
+
+       TEST  s0,  80				; Test the x sign bit
+       JUMP  Z, sx_is_positive
+
+sx_is_negative:
+       TEST  s1,  80				; Test the y sign bit
+       JUMP  Z, sx_neg_sy_is_positive
+
+sx_neg_sy_is_negative:
+       ; sx = -, sy = - perform (x + y) 	sr is - (always)
+       LOAD  s3,  80
+       STORE s3, r_sign		; set sign to negative
+       FETCH s2, r_7
+       OR    s2,  80		; set sr to negative
+       STORE s2, r_7
+       CALL load_mx	   ; Load x oeprand mantisa into s7 down to s0 registers
+       JUMP perform_addition
+
+sx_neg_sy_is_positive:
+       ; sx = -, sy = + => perform (x - y) 	sr is -
+       ; swap x with y
+       CALL swap_operands
+       CALL load_mx	   ; Load x oeprand mantisa into s7 down to s0 registers
+       CALL load_my	   ; Load x oeprand mantisa into s7 down to s0 registers
+       JUMP perform_subtraction
+              
+sx_is_positive:
+       TEST  s1,  80				; Test the y sign bit
+       JUMP  Z, sx_pos_sy_is_positive
+
+sx_pos_sy_is_negative:
+       ; sx = +, sy = - => perform (x - y),     sr is +   mr might be negative (Carry Set)
+       LOAD  s3,  00
+       STORE s3, r_sign		; set sign to positive
+       FETCH s2, r_7
+       AND   s2,  7F		; set sr to positive
+       STORE s2, r_7
+       CALL load_mx	   ; Load x oeprand mantisa into s7 down to s0 registers
+       JUMP perform_subtraction
+
+sx_pos_sy_is_positive:
+       ; sx = +, sy = +	=> perform (x + y),     sr is + (always)
+       LOAD  s3,  00
+       STORE s3, r_sign		; set sign to positive
+	   JUMP  perform_addition
+
+
+       ;---------------------------------------------------------------------------------------------
+       ; Register status:
+       ;		my in [sF, sE, ..., s9] , [s8] grs (mantisa shifted right to have
+       ; 		           			    the adjusted exponent)
+       ;		    s7 = 1X			    ; 1 is the hidden that shows up here.				    
+       ;		    sF =     
+       ;		      	     
+       ; SPM status:	
+       ;     		[x_7, x_6, ..., x_0]  [grs] x_grs_bits 
+       ;     		[x_7, x_6, ..., x_0]  [grs] x_grs_bits - Original
+       ;     		[y_7, y_6, ..., y_0]  [grs] y_grs_bits 
+       ;     		[y_7, y_6, ..., y_0]  [grs] y_grs_bits - my shifted right. ex = ey = er
+       ; 		[r_7,	     r_6,	..., r_1]  [grs] r_grs_bits 
+       ; 		[sEEE_EEEE, EEEE_0000  , ?  , ?]  [???]	 ex = er
+       ;---------------------------------------------------------------------------------------------
+
+
+perform_subtraction:
+       ; Perform subtraction
+       SUB	s0, s8				
+       SUBCY	s1, s9				
+       SUBCY	s2, sA
+       SUBCY	s3, sB
+       SUBCY	s4, sC
+       SUBCY	s5, sD
+       SUBCY	s6, sE
+       SUBCY	s7, sF
+
+	; Check if the result is negative (carry set)
+	JUMP    C, result_is_negative
+
+	; Check if the result is subnormal by testing bit4 of s7
+	TEST 	s7,  10
+	JUMP 	Z, cancellation
+
+	JUMP  	done_cancellation	; skip the cancellation
+
+result_is_negative:
+       ; negate the result	
+       XOR s0,  FF		; toggle all bits and then add 1
+       XOR s1,  FF		
+       XOR s2,  FF		
+       XOR s3,  FF		
+       XOR s4,  FF		
+       XOR s5,  FF		
+       XOR s6,  FF		
+       XOR s7,  FF		
+
+       ADD   s0, 20		; Add 1 to the sticky bit		   
+       ADDCY s1, 00		   
+       ADDCY s2, 00		   
+       ADDCY s3, 00		   
+       ADDCY s4, 00		   
+       ADDCY s5, 00		   
+       ADDCY s6, 00		   
+       ADDCY s7, 00	
+	
+	LOAD  s8, 80	   
+	STORE s8, r_sign		; set sign to negative
+
+	; Check if the result is subnormal by testing bit4 of s7
+	TEST 	s7, 10
+	JUMP 	NZ, done_cancellation	; skip the cancellation
+	JUMP    cancellation  
+
+perform_addition:
+	CALL load_mx	   ; Load x oeprand mantisa into s7 down to s0 registers
+
+	; Add mx and my
+	ADD	s0, s8
+	ADDCY	s1, s9
+	ADDCY	s2, sA
+	ADDCY	s3, sB
+	ADDCY	s4, sC
+	ADDCY	s5, sD
+	ADDCY	s6, sE
+	ADDCY	s7, sF
+
+done_performing_operation:
+       ;-----------------------------------------------------------
+       ; Register status:
+       ;		my in [sF, sE, ..., s9] , [s8] grs (mantisa shifted right to have
+       ; 		      	       	    	       	   	    the adjusted exponent)
+       ;		    sF =     
+       ;		mx in [s7, s6, ..., s1] , [s0] grs : result of operation
+       ;		    s7 =     
+       ;		      	     
+       ; SPM status:	
+       ;    	[x_7, x_6, ..., x_0]  [grs] x_grs_bits - Original
+       ;    	[y_7, y_6, ..., y_0]  [grs] y_grs_bits - my shifted right. ex = ey = er
+       ; 	[r_7, r_6,	..., r_1]  [grs] r_grs_bits: 
+       ; 	result calculated:	[?EEE_EEEE, EEEE_0000  , ?  , ?]  [???]
+       ;-----------------------------------------------------------		
+
+       ; STORE grs bits for future rounding 
+       ;STORE s0, r_grs
+
+       
+       ; If addition produces a carry then normalization is needed
+       TEST s7, 20   	      	  	     
+       JUMP Z, normalize_carry_done
+normalize:
+       ; Normalization
+       ; carry exists: Shift mantisa to the right by 1 and increment exponent by 1
+       ; If carry exists, it will be added to hidden 1 and result is 2 or  10. 
+       ; After shift to right by 1 the result will be normalized. Note that we
+       ; inject 0 to left side because 2 =  10.
+       SR0 s7  	       ; Shift mantisa to right by 1 bit
+       SRA s6
+       SRA s5
+       SRA s4
+       SRA s3
+       SRA s2
+       SRA s1
+       SRA s0
+
+       ; Update r_grs bits
+       STORE s0, r_grs
+
+			; Increment exponent by 1
+       FETCH s9, r_7	; Load "er" from SPM
+       FETCH s8, r_6 
+       ADD   s8,  10
+       ADDCY s9,  00
+       ; ********* (TODO): If carry then produce overflow signal 
+       STORE s9, r_7
+       STORE s8, r_6
+
+normalize_carry_done:
+	JUMP done_cancellation
+
+cancellation:
+       ; Cancellation:	
+       ; Count the number of leading zeros = nlz
+       ; Shift "mr" left by nlz, and set er = er - nlz
+
+       ; Check if er is zero then the result is as it is
+	FETCH 	sB, r_7
+	FETCH 	sA, r_6
+	AND	sA, F0
+	
+	TEST	sA, F0
+	TESTCY	sB, FF
+	JUMP	Z,  done_cancellation		; result is subnormal
+	
+	; else perform cancellation
+       
+       LOAD	sA, 00			; nlz nounter	
+       LOAD	s8, s7			; make a copy of s7
+       SL1  	s8
+       SL1	s8
+       SL1	s8
+       CALL 	count_nlz			; RETs number of zeros in s9
+       FETCH 	sF, r_sign				; if sign is negative, add 1      
+       TEST  	sF, 80
+       JUMP	Z, dont_add_one 	 
+       ADD	s9, 01
+
+dont_add_one:	
+       TEST	s9,  FF				; is s9 = 0 ?	    
+       JUMP	Z, nlz_counting_done
+       COMPARE 	s9,  04
+       JUMP 	Z, got_nlz_4
+       ADD	sA, s9				; Less than 4 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+       JUMP	nlz_counting_done
+
+got_nlz_4:
+       ADD	sA,  04				; Add 4 nlz to sA
+       LOAD	s8, s6
+       CALL 	count_nlz			; RETs number of zeros in s9
+       COMPARE 	s9,  08
+       JUMP 	Z, got_nlz_8
+       ADD	sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+       JUMP	nlz_counting_done
+
+got_nlz_8:
+       ADD	sA,  08				; Add 8 nlz to sA
+       LOAD	s8, s5
+       CALL 	count_nlz			; RETs number of zeros in s9
+       COMPARE 	s9, 08
+       JUMP 	Z, got_nlz_8_s5
+       ADD	sA, s9				; Less than 4 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+       JUMP	nlz_counting_done
+
+got_nlz_8_s5:
+       ADD	sA,  08				; Add 8 nlz to sA
+       LOAD	s8, s4
+       CALL 	count_nlz			; RETs number of zeros in s9
+       COMPARE 	s9,  08
+       JUMP 	Z, got_nlz_8_s4
+       ADD	sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+       JUMP	nlz_counting_done
+
+got_nlz_8_s4:
+       ADD	sA,  08				; Add 8 nlz to sA
+       LOAD	s8, s3
+       CALL 	count_nlz			; RETs number of zeros in s9
+       COMPARE 	s9,  08
+       JUMP 	Z, got_nlz_8_s3
+       ADD	sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+       JUMP	nlz_counting_done
+
+got_nlz_8_s3:
+       ADD	sA,  08				; Add 8 nlz to sA
+       LOAD	s8, s2
+       CALL 	count_nlz			; RETs number of zeros in s9
+       COMPARE 	s9,  08
+       JUMP 	Z, got_nlz_8_s2
+       ADD	sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+       JUMP	nlz_counting_done
+
+got_nlz_8_s2:
+       ADD	sA,  08				; Add 8 nlz to sA
+       LOAD	s8, s1
+       CALL 	count_nlz			; RETs number of zeros in s9
+       ADD	sA, s9				; Less than 8 zeros, Add the counted nlz to sA 
+       		    				;  and finish the nlz counting,
+
+nlz_counting_done:
+
+	
+		
+	TEST sA,  FF		; is sA zero ?
+	JUMP Z, done_intermediate_shift_riht_loop
+	
+    ; Shift the intermediate result to left by nlz(sA) bits.
+
+    LOAD s9, sA			; Copy the sA
+       
+	; At this point result mantisa is in [s7, s6, ..., s1] 				
+intermediate_shift_riht_loop:
+       SL0 s0				; 1-bit left shift		
+       SLA s1						
+       SLA s2		
+       SLA s3		
+       SLA s4		
+       SLA s5		
+       SLA s6		
+       SLA s7
+       SUB s9,  01
+       JUMP NZ, intermediate_shift_riht_loop
+
+done_intermediate_shift_riht_loop:
+	
+	; Subtract the er by the number of bits shifted left (sA).
+	FETCH	s9, r_7				; read er
+	FETCH 	s8, r_6	
+
+	SR0	s9					; Shift to right by 4
+	SRA	s8
+	SR0	s9
+	SRA	s8
+	SR0	s9
+	SRA	s8
+	SR0	s9
+	SRA 	s8
+
+	FETCH 	sF, r_sign				; if sign is negative subtract sA by 1     
+	TEST  	sF, 80
+	JUMP	Z, dont_subtract_one
+	SUB	sA, 01
+dont_subtract_one:
+
+	SUB	s8, sA
+	SUBCY	s9, 00	
+	
+	SL0	s8					; Shift to left by 4
+	SLA	s9
+	SL0	s8					
+	SLA	s9
+	SL0	s8					
+	SLA	s9
+	SL0	s8					
+	SLA	s9
+
+	AND	s7, 0F
+	OR  	s7, s8					; combine "mr" into r_6
+	STORE 	s9, r_7			
+	STORE 	s7, r_6								
+	STORE 	s6, r_5								
+	STORE 	s5, r_4								
+	STORE 	s4, r_3								
+	STORE 	s3, r_2								
+	STORE 	s2, r_1								
+	STORE 	s1, r_0				
+	STORE 	s0, r_grs
+	JUMP rounding
+  
+done_cancellation:       
+	AND 	s7, 0F				; clear the high nibble		
+	FETCH 	s9, r_7				; read er
+	FETCH 	s8, r_6				 
+    	OR  	s7, s8				; combine "mr" into r_6
+	STORE 	s9, r_7			
+	STORE 	s8, r_6				 
+	STORE 	s7, r_6								
+	STORE 	s6, r_5								
+	STORE 	s5, r_4								
+	STORE 	s4, r_3								
+	STORE 	s3, r_2								
+	STORE 	s2, r_1								
+	STORE 	s1, r_0				
+	STORE 	s0, r_grs
+
+rounding:
+       FETCH    s0, r_grs		; Load the result into registers ; 
+       FETCH    s1, r_0			;
+       CALL     round			; 0 or 1 is RETed in s0  
+
+       FETCH    s2, r_1
+       FETCH    s3, r_2
+       FETCH    s4, r_3
+       FETCH    s5, r_4
+       FETCH    s6, r_5
+       FETCH    s7, r_6
+       FETCH    s8, r_7
+
+       ;-----------------------------------------------------------
+       ; Register status:
+       ;		r in [s8, s7, ..., s1] , [s0] grs : result of operation (normalized)
+       ;		      	     
+       ; SPM status:	
+       ; 		[r_7,	     r_6,	..., r_1]  [grs] r_grs
+       ; 		[sEEEE_EEEE, EEEE_MMMM  ,  ..., MMMM_MMMM]  [grs]	 
+       ;			    	       (normalized) (cancellation & exp. corrected)
+       ;-----------------------------------------------------------		
+
+       ; Applying rounding
+       ADD	s1, s0		
+       ADDCY	s2,  00
+       ADDCY	s3,  00
+       ADDCY	s4,  00
+       ADDCY	s5,  00
+       ADDCY	s6,  00
+       ADDCY	s7,  00
+       ADDCY	s8,  00
+       
+       
+       ;-----------------------------------------------------------
+       ; Register status:
+       ;		r in [s7, s6, ..., s1] , [s0] grs : 
+       ;		    s7 =     
+       ;		      	     
+       ; SPM status:	
+       ; 		[r_7,	     r_6,	..., r_1]  [grs] r_grs
+       ; 		[0EEE_EEEE, EEEE_MMMM  ,  ..., MMMM_MMMM]  [grs]	 
+       ;			    (normalized) (cancellation & exp. corrected)
+       ;			    (rounded)
+       ;-----------------------------------------------------------		
+       
+	; check if the result is zero then replace -0 with +0
+	TEST	s1,  FF	
+	TESTCY	s2,  FF	
+	TESTCY	s3,  FF	
+	TESTCY	s4,  FF	
+	TESTCY	s5,  FF	
+	TESTCY	s6,  FF	
+	TESTCY	s7,  7F
+	JUMP	NZ, result_is_not_all_zero 	
+      
+    ; ALL is zero so be sure that we send +0
+	AND		s7,  7F
+    LOAD  	s9,  00
+    STORE 	s9, r_sign		; set sign to positive
+
+
+result_is_not_all_zero:
+
+      ; Save the result in SMP
+      STORE 	s1, r_0
+      STORE 	s2, r_1
+      STORE 	s3, r_2
+      STORE 	s4, r_3
+      STORE 	s5, r_4
+      STORE 	s6, r_5
+      STORE 	s7, r_6 
+      STORE 	s8, r_7		
+
+      ; Determine the sign
+       FETCH    s0, r_7
+       FETCH		s1, r_sign
+       OR    	s0, s1
+       STORE 	s0, r_7
+
+       ; Normalization
+
+       RETURN			
+
+;------------------------------------------------------------------------------------
+; Procedure:		count_nlz()
+; Registers Used:	
+; 	    		Bank0 : s8, s9
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : s8
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		s9: number of leading zeros
+; 
+; Return Flags:		None
+;
+; Description:		Counts the number of leading zeros in a byte given in s8.
+;------------------------------------------------------------------------------------
+count_nlz:
+	LOAD s9, 00			
+count_mlz_loop:
+	SL1  s8
+       	JUMP C, counting_z_done
+       	ADD  s9, 01			; Increament z by 1
+       	JUMP count_mlz_loop
+counting_z_done:
+	RETURN
+
+;------------------------------------------------------------------------------------
+; Procedure:		load_mx()
+; Registers Used:	
+; 	    		Bank0 : s7, s6, ... , s0
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		None
+; 
+; Return Flags:		None
+;
+; Description:		Load x oeprand mantisa to register s7 down to s0.
+;------------------------------------------------------------------------------------
+load_mx: 
+	; Is op1 subnormal? yes: inject hidden 0, No: Inject hidden 1
+	FETCH 	s0, op1_status
+	TEST	s0, 80
+	JUMP	NZ, subnormal_involved3
+
+	; not a subnormal
+	LOAD 	s0, 10
+	JUMP	subnormal_test_done3
+
+subnormal_involved3:
+	LOAD 	s0, 00
+
+subnormal_test_done3:
+
+	; Load mx into registers, my already loaded 
+	FETCH s7, x_6
+	AND   s7, 0F			; zero the upper nibble	(4-bit exponent value)	
+	OR    s7, s0				; Bring hidden 1/0 into existence		
+	FETCH s6, x_5
+	FETCH s5, x_4
+	FETCH s4, x_3
+	FETCH s3, x_2
+	FETCH s2, x_1
+	FETCH s1, x_0
+	FETCH s0, x_grs
+       RETURN	 
+
+;------------------------------------------------------------------------------------
+; Procedure:		load_my()
+; Registers Used:	
+; 	    		Bank0 : sF, sE, ... , s8
+;			Bank1 : None		
+;		
+; Arguments:		
+; 			Bank0 : None
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		None
+; 
+; Return Flags:		None
+;
+; Description:		Load y oeprand mantisa to register sF down to s8.
+;------------------------------------------------------------------------------------
+load_my: 
+	; Is op1 subnormal? yes: inject hidden 0, No: Inject hidden 1
+	FETCH 	s8, op2_status
+	TEST	s8, 80
+	JUMP	NZ, subnormal_involved4
+
+	; not a subnormal
+	LOAD 	s8, 10
+	JUMP	subnormal_test_done4
+
+subnormal_involved4:
+	LOAD 	s8, 00
+
+subnormal_test_done4:
+
+	; Load mx into registers, my already loaded 
+	FETCH s7, y_6
+	AND   s7, 0F			; zero the upper nibble	(4-bit exponent value)	
+	OR    s7, s8				; Bring hidden 1/0 into existence		
+	FETCH s6, y_5
+	FETCH s5, y_4
+	FETCH s4, y_3
+	FETCH s3, y_2
+	FETCH s2, y_1
+	FETCH s1, y_0
+	FETCH s0, y_grs
+       RETURN	 
+
+;------------------------------------------------------------------------------------
+; Procedure:		round()
+;
+; Registers Used:	Bank0 : s8, s0 
+;			Bank1 : None		
+;		
+; Arguments:		Bank0 : [s1,s0]
+;			Bank1 : None
+;
+; Calls:		None
+;
+; Returns:		s0
+; 
+; Return Flags:		None
+;
+; Description:		This procedure receives guard-sticky-round bits in s0 register
+; 			and returns 0 or 1 in s0 based on rounding algorith. s1 hold the
+;			Least signifficant byte.
+;			
+;			
+;	Check the guard bit
+; 	If Gaurd bit = 0 : Round down (Do nothing - simple truncation)
+; 	If Gaurd bit = 1, Check the Round bit
+;	If Gaurd bit = 1, and Round bit = 1 : Round Up (add 1 to mantissa)
+;	If Gaurd bit = 1, and Round bit = 0 : Check the Sticky bit
+;	If Gaurd bit = 1, and Round bit = 0 , and Sticky bit = 1 : Round Up (add 1 to mantissa)
+;	If Gaurd bit = 1, and Round bit = 0 , and Sticky bit = 0 : Round to nearest even. 
+;	   Means round up if bitbefore Guard bit is 1, else round down.
+;------------------------------------------------------------------------------------
+round: 
+
+       ; Calculate the sticky bit: Bit5 = Bit5 + Bit4 + Bit3 + Bit2 + Bit1 + Bit0
+       LOAD s8, s0    	      ; make a copy of s0
+       AND  s8, 3F	      ; Mask guard and round bits
+       TEST s8, 3F	      ; Are all bits zero?
+       JUMP Z,  set_sticky_bit_to_zero
+       OR   s0, 20	      ; Set the sticky bit to one
+set_sticky_bit_to_zero:
+       ; The sticky bit is zero already so do nothing
+
+       ; -------------------------------------------------
+       ; Rounding:
+       ; Check the guard bit - s0[7]
+       TEST s0, 80
+       JUMP NZ, guard_bit_is_1
+       ; Gaurd bit = 0 : Round down (Do  nothing)
+       JUMP round_return_zero
+       
+guard_bit_is_1:
+       ; Gaurd bit = 1, Check the round bit
+       TEST s0, 40 
+       JUMP Z, round_bit_is_0	
+       ; Gaurd bit = 1, Round bit = 1 : Round Up (add 1 to mantissa)
+       JUMP round_return_one
+
+round_bit_is_0:
+       ; Gaurd bit = 1, Round bit = 0 : Check the Sticky bit
+       TEST s0, 20
+       JUMP NZ, round_return_one ; Gaurd bit = 1, Round bit = 0 , Sticky bit = 1 : Round Up (add 1 to mantissa)
+
+       ; Gaurd bit = 1, Round bit = 0 , Sticky bit = 0 : Round to nearest even,
+       ;       Means round up if bit before Guard bit is 1, else round down.
+              
+       TEST s1, 01
+       JUMP Z, round_return_zero
+
+round_return_one:
+       LOAD s0, 01		      
+       RETURN
+			      
+round_return_zero:
+       LOAD s0, 00		      
+       RETURN
+
+invoke_done_interrupt:
+	LOAD	s5, 00
+	OUTPUT 	s5, irqs_output_port
+	OR s5, s5	; Delay
+	LOAD	s5, 01 
+	OUTPUT 	s5, irqs_output_port
+
+	; delay after setting the line to high: 32 cycles
+	LOAD s6, 40
+	delay_int_loop: 
+	SUB s6, 01
+	JUMP NZ, delay_int_loop
+
+	LOAD	s5, 00
+	OUTPUT 	s5, irqs_output_port
+	RETURN
+
+write_result_to_external_memory:
+	LOAD s6, 00		; Write result at address  010
+	LOAD s5, 10
+	FETCH s7, r_0
+	;LOAD s7, 25
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  011
+	LOAD s5, 11
+	FETCH s7, r_1
+	;LOAD s7, 26
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  012
+	LOAD s5, 12
+	FETCH s7, r_2
+	;LOAD s7, 27
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  013
+	LOAD s5, 13
+	FETCH s7, r_3
+	;LOAD s7, 28
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  014
+	LOAD s5, 14
+	FETCH s7, r_4
+	;LOAD s7, 29
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  015
+	LOAD s5, 15
+	FETCH s7, r_5
+	;LOAD s7, 30
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  016
+	LOAD s5, 16
+	FETCH s7, r_6
+	;LOAD s7, 31
+	CALL Write_ext_mem	
+	LOAD s6, 00		; Write result at address  017
+	LOAD s5, 17
+	FETCH s7, r_7
+	;LOAD s7, 32
+	CALL Write_ext_mem	
+	RETURN
+
+swap_operands:
+	REGBANK	B
+	FETCH 	s7, x_7 	
+	FETCH 	s6, x_6 	
+	FETCH 	s5, x_5 	
+	FETCH 	s4, x_4 	
+	FETCH 	s3, x_3 	
+	FETCH 	s2, x_2 	
+	FETCH 	s1, x_1 	
+	FETCH 	s0, x_0
+	FETCH 	s8, x_grs 	
+	
+	FETCH 	sF, y_7 	
+	FETCH 	sE, y_6 	
+	FETCH 	sD, y_5 	
+	FETCH 	sC, y_4 	
+	FETCH 	sB, y_3 	
+	FETCH 	sA, y_2 	
+	FETCH 	s9, y_1 	
+	
+	STORE	s7, y_7	
+	STORE	s6, y_6	
+	STORE	s5, y_5	
+	STORE	s4, y_4	
+	STORE	s3, y_3	
+	STORE	s2, y_2	
+	STORE	s1, y_1	
+
+	FETCH 	s7, y_0
+	FETCH 	s6, y_grs 	
+
+	STORE	s0, y_0	
+	STORE	s8, y_grs
+	
+	STORE	sF, x_7	
+	STORE	sE, x_6	
+	STORE	sD, x_5	
+	STORE	sC, x_4	
+	STORE	sB, x_3	
+	STORE	sA, x_2	
+	STORE	s9, x_1	
+	STORE	s7, x_0	
+	STORE	s6, x_grs
+	
+	; Swap the operands' status		
+	FETCH 	s5, op1_status	       
+	FETCH 	s6, op2_status	       
+	STORE	s5, op2_status
+	STORE	s6, op1_status
+	
+	REGBANK A
+	RETURN

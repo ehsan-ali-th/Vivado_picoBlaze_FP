@@ -1,0 +1,108 @@
+Vivado Simulator 2018.2
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: /mnt/hd_ext/Xilinx/Vivado/2018.2/bin/unwrapped/lnx64.o/xelab -wto 23a01a446f4e411ca1aa9d13bc4bac65 --incr --debug typical --relax --mt 8 -L blk_mem_gen_v8_4_1 -L xil_defaultlib -L xilinx_vip -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot test_pBlaze_behav xil_defaultlib.test_pBlaze xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package unisim.vcomponents
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package xil_defaultlib.jtag_loader_pkg
+Compiling package ieee.std_logic_textio
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="111111110000000011...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00000000101010100000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00000000101010100000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00000000101010100000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000001010100...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000010101000...]
+Compiling architecture fdse_v of entity unisim.FDSE [fdse_default]
+Compiling architecture fds_v of entity unisim.FDS [fds_default]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="10111111101111001000...]
+Compiling architecture ram256x1s_v of entity unisim.RAM256X1S [ram256x1s_default]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="011010010110100101...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="11111111000000001111...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="111111111111111111...]
+Compiling architecture fdre_v of entity unisim.FDRE [fdre_default]
+Compiling architecture fd_v of entity unisim.FD [fd_default]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000001000001100...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000001000000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00000000000000000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110011000011001111...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="01011010001111001111...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="011101110111011100...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000011...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="11111111111111111111...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="111111111111111100...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000111100101000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="011101110000100000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110100000000000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000100...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110000001100110000...]
+Compiling architecture fdr_v of entity unisim.FDR [fdr_default]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="100000000000000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="010000000000000000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00000000100000000000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="10101100101011001111...]
+Compiling architecture xorcy_v of entity unisim.XORCY [xorcy_default]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000000...]
+Compiling architecture muxcy_v of entity unisim.MUXCY [muxcy_default]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="01101001100101101001...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="11111111111111111010...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="001100110011001110...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="101000101000000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="11111011111111110000...]
+Compiling architecture ram32m_v of entity unisim.RAM32M [ram32m_default]
+Compiling architecture low_level_definition of entity xil_defaultlib.kcpsm6 [\kcpsm6(hwbuild="01000001",scrat...]
+Compiling architecture ramb36e2_v of entity unisim.RAMB36E2 [\RAMB36E2(doa_reg=0,dob_reg=0,in...]
+Compiling architecture ramb36e2_v of entity unisim.RAMB36E2 [\RAMB36E2(doa_reg=0,dob_reg=0,in...]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(jtag_chain=4)(1,5)\]
+Compiling architecture bufg_v of entity unisim.BUFG [bufg_default]
+Compiling architecture behavioral of entity xil_defaultlib.jtag_loader_6 [\jtag_loader_6(c_family="US",c_b...]
+Compiling architecture low_level_definition of entity xil_defaultlib.pBlaze_prog [\pBlaze_prog(1,2)\]
+Compiling architecture srl16e_v of entity unisim.SRL16E [\SRL16E(0,15)\]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="11111111000000001111...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="11110000111100001110...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110011001001000001...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="111101001111110011...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000100...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110011111010101011...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="10000101010100000000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00100110011000010000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="10001000011100000000...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="10000111010001000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="011011000000000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="011111111000000011...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000000000000000...]
+Compiling architecture low_level_definition of entity xil_defaultlib.uart_tx6 [uart_tx6_default]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110011001111000000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="110010101111111111...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="111100001100110011...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00101111001011111010...]
+Compiling architecture lut6_v of entity unisim.LUT6 [\LUT6(init="00100010001000100000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="011011001100110000...]
+Compiling architecture lut6_2_v of entity unisim.LUT6_2 [\LUT6_2(init="000000001000000000...]
+Compiling architecture low_level_definition of entity xil_defaultlib.uart_rx6 [uart_rx6_default]
+Compiling architecture behavioral of entity xil_defaultlib.pBlaze [pblaze_default]
+Compiling module blk_mem_gen_v8_4_1.blk_mem_gen_v8_4_1_output_stage(...
+Compiling module blk_mem_gen_v8_4_1.blk_mem_gen_v8_4_1_output_stage(...
+Compiling module blk_mem_gen_v8_4_1.blk_mem_gen_v8_4_1_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_1.blk_mem_gen_v8_4_1_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_1.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_1.blk_mem_gen_v8_4_1(C_FAMILY="zyn...
+Compiling module xil_defaultlib.extra_mem_0
+Compiling architecture behavioral of entity xil_defaultlib.test_pblaze
+Built simulation snapshot test_pBlaze_behav

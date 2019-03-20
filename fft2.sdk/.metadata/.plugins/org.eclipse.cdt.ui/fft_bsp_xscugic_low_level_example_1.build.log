@@ -1,0 +1,25 @@
+13:35:54 **** Build of configuration Debug for project fft_bsp_xscugic_low_level_example_1 ****
+make all 
+Building file: ../src/xscugic_low_level_example.c
+Invoking: ARM v8 gcc compiler
+aarch64-none-elf-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xscugic_low_level_example.o" -I../../fft_bsp/psu_cortexa53_0/include -MMD -MP -MF"src/xscugic_low_level_example.d" -MT"src/xscugic_low_level_example.o" -o "src/xscugic_low_level_example.o" "../src/xscugic_low_level_example.c"
+../src/xscugic_low_level_example.c: In function 'LowInterruptHandler':
+../src/xscugic_low_level_example.c:268:16: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  BaseAddress = (u32)CallbackRef;
+                ^
+Finished building: ../src/xscugic_low_level_example.c
+ 
+Building target: fft_bsp_xscugic_low_level_example_1.elf
+Invoking: ARM v8 gcc linker
+aarch64-none-elf-gcc -Wl,-T -Wl,../src/lscript.ld -L../../fft_bsp/psu_cortexa53_0/lib -o "fft_bsp_xscugic_low_level_example_1.elf"  ./src/xscugic_low_level_example.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+Finished building target: fft_bsp_xscugic_low_level_example_1.elf
+ 
+Invoking: ARM v8 Print Size
+aarch64-none-elf-size fft_bsp_xscugic_low_level_example_1.elf  |tee "fft_bsp_xscugic_low_level_example_1.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  33860	   2352	  20648	  56860	   de1c	fft_bsp_xscugic_low_level_example_1.elf
+Finished building: fft_bsp_xscugic_low_level_example_1.elf.size
+ 
+
+13:35:55 Build Finished (took 173ms)
+

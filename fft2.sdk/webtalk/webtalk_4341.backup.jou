@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2018.2.1 (64-bit)
+# SW Build 2288692 on Thu Jul 26 18:23:50 MDT 2018
+# 
+# Start of session at: Tue Jan 15 16:32:03 2019
+# Process ID: 4341
+# Current directory: /home/esi/workspace/Vivado_2018.2/zcu104/fft2/fft2.sdk/webtalk
+# Command line: wbtcv -mode batch -source sdk_webtalk.tcl
+# Log file: /home/esi/workspace/Vivado_2018.2/zcu104/fft2/fft2.sdk/webtalk/webtalk.log
+# Journal file: /home/esi/workspace/Vivado_2018.2/zcu104/fft2/fft2.sdk/webtalk/webtalk.jou
+#-----------------------------------------------------------
+source sdk_webtalk.tcl

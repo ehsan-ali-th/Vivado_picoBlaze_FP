@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Webtalk v2018.2.1 (64-bit)
+# SW Build 2288692 on Thu Jul 26 18:23:50 MDT 2018
+# IP Build 2289599 on Thu Jul 26 21:09:20 MDT 2018
+# Start of session at: Tue Dec 18 13:09:46 2018
+# Process ID: 24482
+# Current directory: /home/esi/workspace/Vivado_2018.2/zcu104/fft/fft.sim/sim_1/behav/xsim
+# Command line: wbtcv -mode batch -source /home/esi/workspace/Vivado_2018.2/zcu104/fft/fft.sim/sim_1/behav/xsim/xsim.dir/pBlaze_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: /home/esi/workspace/Vivado_2018.2/zcu104/fft/fft.sim/sim_1/behav/xsim/webtalk.log
+# Journal file: /home/esi/workspace/Vivado_2018.2/zcu104/fft/fft.sim/sim_1/behav/xsim/webtalk.jou
+#-----------------------------------------------------------
+source /home/esi/workspace/Vivado_2018.2/zcu104/fft/fft.sim/sim_1/behav/xsim/xsim.dir/pBlaze_behav/webtalk/xsim_webtalk.tcl -notrace
+webtalk_transmit: Time (s): cpu = 00:00:00.78 ; elapsed = 00:00:06 . Memory (MB): peak = 393.387 ; gain = 0.000 ; free physical = 5953 ; free virtual = 25959
+INFO: [Common 17-206] Exiting Webtalk at Tue Dec 18 13:09:52 2018...

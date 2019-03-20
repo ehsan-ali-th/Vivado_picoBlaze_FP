@@ -1,0 +1,21 @@
+# This sed script converts the fidex assmebly instructions mnemonic to KCPSM6
+
+s/RET/RETURN/g
+s/COMPC/COMPARECY/g
+s/COMP/COMPARE/g
+s/TESTC/TESTCY/g
+s/ADDC/ADDCY/g
+s/SUBC/SUBCY/g
+s/ROLC/SLA/g
+s/RORC/SRA/g
+s/LOADRET/LOAD&RETURN/g
+s/RDMEM/FETCH/g
+s/RDPRT/INPUT/g
+s/WRPRT/OUTPUT/g
+s/WRMEM/STORE/g
+
+
+s/0x//g
+
+
+

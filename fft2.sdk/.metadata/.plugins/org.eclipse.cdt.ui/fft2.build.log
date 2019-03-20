@@ -1,0 +1,6 @@
+16:37:19 **** Incremental Build of configuration Debug for project fft2 ****
+make all 
+make: Nothing to be done for 'all'.
+
+16:37:19 Build Finished (took 239ms)
+
